@@ -1,0 +1,967 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="sn_netModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="cloud_srv">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sernum" Type="varchar" MaxLength="20" />
+          <Property Name="start_date" Type="date" Nullable="false" />
+          <Property Name="end_date" Type="date" Nullable="false" />
+          <Property Name="email" Type="char" MaxLength="100" Nullable="false" />
+          <Property Name="rec_by" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="rec_date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="d_msg">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dealer" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="date" Type="date" />
+          <Property Name="time" Type="char" MaxLength="5" />
+          <Property Name="name" Type="char" MaxLength="3" />
+          <Property Name="description" Type="char" MaxLength="100" />
+          <Property Name="users_name" Type="char" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="dealer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dealer" Type="varchar" MaxLength="20" />
+          <Property Name="prenam" Type="varchar" MaxLength="30" />
+          <Property Name="compnam" Type="varchar" MaxLength="100" />
+          <Property Name="addr01" Type="varchar" MaxLength="50" />
+          <Property Name="addr02" Type="varchar" MaxLength="50" />
+          <Property Name="addr03" Type="varchar" MaxLength="30" />
+          <Property Name="zipcod" Type="varchar" MaxLength="5" />
+          <Property Name="telnum" Type="varchar" MaxLength="40" />
+          <Property Name="faxnum" Type="varchar" MaxLength="40" />
+          <Property Name="contact" Type="varchar" MaxLength="100" />
+          <Property Name="position" Type="varchar" MaxLength="50" />
+          <Property Name="busides" Type="varchar" MaxLength="40" />
+          <Property Name="area" Type="varchar" MaxLength="10" />
+          <Property Name="remark" Type="varchar" MaxLength="50" />
+          <Property Name="chgdat" Type="date" />
+          <Property Name="users_id" Type="int" />
+          <Property Name="users_name" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="event_calendar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="users_name" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="realname" Type="char" MaxLength="20" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="from_time" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="to_time" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="event_type" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="event_code" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="customer" Type="varchar" MaxLength="40" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="med_cert" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="fine" Type="int" Nullable="false" />
+          <Property Name="rec_by" Type="char" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="istab">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tabtyp" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="typcod" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="abbreviate_en" Type="varchar" MaxLength="20" />
+          <Property Name="abbreviate_th" Type="varchar" MaxLength="20" />
+          <Property Name="typdes_en" Type="varchar" MaxLength="50" />
+          <Property Name="typdes_th" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ma">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sernum" Type="char" MaxLength="20" />
+          <Property Name="start_date" Type="date" Nullable="false" />
+          <Property Name="end_date" Type="date" Nullable="false" />
+          <Property Name="email" Type="char" MaxLength="100" Nullable="false" />
+          <Property Name="rec_by" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="rec_date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mac_allowed">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mac_address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="create_by" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="create_at" Type="timestamp" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="note_calendar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="50" />
+          <Property Name="group_maid" Type="varchar" MaxLength="10" />
+          <Property Name="group_weekend" Type="varchar" MaxLength="10" />
+          <Property Name="max_leave" Type="int" Nullable="false" />
+          <Property Name="rec_by" Type="char" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="problem">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="probcod" Type="varchar" MaxLength="2" />
+          <Property Name="probdesc" Type="varchar" MaxLength="100" />
+          <Property Name="date" Type="date" />
+          <Property Name="time" Type="varchar" MaxLength="8" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="users_id" Type="int" />
+          <Property Name="users_name" Type="varchar" MaxLength="20" />
+          <Property Name="serial_id" Type="int" />
+          <Property Name="serial_sernum" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="serial">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sernum" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="oldnum" Type="varchar" MaxLength="20" />
+          <Property Name="version" Type="varchar" MaxLength="4" />
+          <Property Name="contact" Type="varchar" MaxLength="100" />
+          <Property Name="position" Type="varchar" MaxLength="50" />
+          <Property Name="prenam" Type="varchar" MaxLength="30" />
+          <Property Name="compnam" Type="varchar" MaxLength="100" />
+          <Property Name="addr01" Type="varchar" MaxLength="50" />
+          <Property Name="addr02" Type="varchar" MaxLength="50" />
+          <Property Name="addr03" Type="varchar" MaxLength="30" />
+          <Property Name="zipcod" Type="varchar" MaxLength="5" />
+          <Property Name="telnum" Type="varchar" MaxLength="40" />
+          <Property Name="faxnum" Type="varchar" MaxLength="40" />
+          <Property Name="busityp" Type="varchar" MaxLength="4" />
+          <Property Name="busides" Type="varchar" MaxLength="40" />
+          <Property Name="purdat" Type="date" />
+          <Property Name="expdat" Type="date" />
+          <Property Name="howknown" Type="varchar" MaxLength="4" />
+          <Property Name="area" Type="varchar" MaxLength="10" />
+          <Property Name="branch" Type="varchar" MaxLength="1" />
+          <Property Name="manual" Type="date" />
+          <Property Name="upfree" Type="varchar" MaxLength="1" />
+          <Property Name="refnum" Type="varchar" MaxLength="12" />
+          <Property Name="remark" Type="varchar" MaxLength="50" />
+          <Property Name="chgdat" Type="date" />
+          <Property Name="verext" Type="varchar" MaxLength="1" />
+          <Property Name="verextdat" Type="date" />
+          <Property Name="users_id" Type="int" />
+          <Property Name="users_name" Type="varchar" MaxLength="20" />
+          <Property Name="dealer_id" Type="int" />
+          <Property Name="dealer_dealer" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="serial_password">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sernum" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="pass_word" Type="char" MaxLength="100" Nullable="false" />
+          <Property Name="rec_by" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="rec_date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="spy_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="users_name" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="serial_sernum" Type="varchar" MaxLength="20" />
+          <Property Name="compnam" Type="varchar" MaxLength="100" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="time" Type="char" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="support_note">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="users_name" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="sernum" Type="char" MaxLength="20" />
+          <Property Name="contact" Type="char" MaxLength="20" />
+          <Property Name="start_time" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="end_time" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="duration" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="problem" Type="varchar" MaxLength="255" />
+          <Property Name="remark" Type="varchar" MaxLength="100" />
+          <Property Name="is_break" Type="char" MaxLength="1" />
+          <Property Name="reason" Type="char" MaxLength="30" />
+          <Property Name="file_path" Type="varchar" MaxLength="255" />
+          <Property Name="rec_by" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="support_note_comment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="note_id" Type="int" Nullable="false" />
+          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="255" />
+          <Property Name="file_path" Type="varchar" MaxLength="255" />
+          <Property Name="rec_by" Type="char" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="training_calendar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="course_type" Type="int" Nullable="false" />
+          <Property Name="trainer" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="term" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="40" />
+          <Property Name="rec_by" Type="char" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="userpassword" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="name" Type="char" MaxLength="20" />
+          <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="level" Type="int" Nullable="false" />
+          <Property Name="usergroup" Type="varchar" MaxLength="10" />
+          <Property Name="status" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="allowed_web_login" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="training_expert" Type="char" MaxLength="1" />
+          <Property Name="max_absent" Type="int" Nullable="false" />
+          <Property Name="create_at" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="last_use" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="rec_by" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="websession">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="exp_time" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="users_id" Type="int" Nullable="false" />
+          <Property Name="create_time" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_dealer_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="dealer" Type="Self.dealer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dealer">
+              <PropertyRef Name="users_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_problem_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="problem" Type="Self.problem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="problem">
+              <PropertyRef Name="users_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_websession_users1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="websession" Type="Self.websession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="websession">
+              <PropertyRef Name="users_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="sn_netModelStoreContainer">
+          <EntitySet Name="cloud_srv" EntityType="Self.cloud_srv" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="d_msg" EntityType="Self.d_msg" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="dealer" EntityType="Self.dealer" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="event_calendar" EntityType="Self.event_calendar" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="istab" EntityType="Self.istab" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="ma" EntityType="Self.ma" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="mac_allowed" EntityType="Self.mac_allowed" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="note_calendar" EntityType="Self.note_calendar" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="problem" EntityType="Self.problem" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="serial" EntityType="Self.serial" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="serial_password" EntityType="Self.serial_password" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="spy_log" EntityType="Self.spy_log" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="support_note" EntityType="Self.support_note" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="support_note_comment" EntityType="Self.support_note_comment" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="training_calendar" EntityType="Self.training_calendar" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="sn_net" store:Type="Tables" />
+          <EntitySet Name="websession" EntityType="Self.websession" Schema="sn_net" store:Type="Tables" />
+          <AssociationSet Name="fk_dealer_users1" Association="Self.fk_dealer_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="dealer" EntitySet="dealer" />
+          </AssociationSet>
+          <AssociationSet Name="fk_problem_users1" Association="Self.fk_problem_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="problem" EntitySet="problem" />
+          </AssociationSet>
+          <AssociationSet Name="fk_websession_users1" Association="Self.fk_websession_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="websession" EntitySet="websession" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="sn_netModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="cloud_srv">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sernum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rec_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rec_date" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="d_msg">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dealer" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="date" Type="DateTime" />
+          <Property Name="time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="users_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="dealer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dealer1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="prenam" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="compnam" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="addr01" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="addr02" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="addr03" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="zipcod" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="telnum" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="faxnum" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="contact" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="busides" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="area" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="chgdat" Type="DateTime" />
+          <Property Name="users_id" Type="Int32" />
+          <Property Name="users_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="users" Relationship="Self.fk_dealer_users1" FromRole="dealer" ToRole="users" />
+        </EntityType>
+        <EntityType Name="event_calendar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="users_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="realname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" />
+          <Property Name="from_time" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="to_time" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="event_type" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="event_code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="customer" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="med_cert" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fine" Type="Int32" Nullable="false" />
+          <Property Name="rec_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="istab">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tabtyp" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="typcod" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="abbreviate_en" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="abbreviate_th" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="typdes_en" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="typdes_th" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ma">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sernum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rec_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rec_date" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mac_allowed">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mac_address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="create_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="create_at" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="note_calendar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" />
+          <Property Name="type" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="group_maid" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="group_weekend" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="max_leave" Type="Int32" Nullable="false" />
+          <Property Name="rec_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="problem">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="probcod" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="probdesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" />
+          <Property Name="time" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="users_id" Type="Int32" />
+          <Property Name="users_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="serial_id" Type="Int32" />
+          <Property Name="serial_sernum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="users" Relationship="Self.fk_problem_users1" FromRole="problem" ToRole="users" />
+        </EntityType>
+        <EntityType Name="serial">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sernum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="oldnum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="version" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="contact" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prenam" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="compnam" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="addr01" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="addr02" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="addr03" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="zipcod" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="telnum" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="faxnum" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="busityp" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="busides" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="purdat" Type="DateTime" />
+          <Property Name="expdat" Type="DateTime" />
+          <Property Name="howknown" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="area" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="branch" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="manual" Type="DateTime" />
+          <Property Name="upfree" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="refnum" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="chgdat" Type="DateTime" />
+          <Property Name="verext" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="verextdat" Type="DateTime" />
+          <Property Name="users_id" Type="Int32" />
+          <Property Name="users_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="dealer_id" Type="Int32" />
+          <Property Name="dealer_dealer" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="serial_password">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sernum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pass_word" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rec_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rec_date" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="spy_log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="users_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="serial_sernum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="compnam" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" />
+          <Property Name="time" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="support_note">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" />
+          <Property Name="users_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sernum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="contact" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="start_time" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="end_time" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="duration" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="problem" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="is_break" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="reason" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="file_path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="rec_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="support_note_comment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" />
+          <Property Name="note_id" Type="Int32" Nullable="false" />
+          <Property Name="type" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="file_path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="rec_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="training_calendar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" />
+          <Property Name="course_type" Type="Int32" Nullable="false" />
+          <Property Name="trainer" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="term" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="rec_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userpassword" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="level" Type="Int32" Nullable="false" />
+          <Property Name="usergroup" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="allowed_web_login" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="training_expert" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="max_absent" Type="Int32" Nullable="false" />
+          <Property Name="create_at" Type="DateTime" Nullable="false" />
+          <Property Name="last_use" Type="DateTime" Nullable="false" />
+          <Property Name="rec_by" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="dealer" Relationship="Self.fk_dealer_users1" FromRole="users" ToRole="dealer" />
+          <NavigationProperty Name="problem" Relationship="Self.fk_problem_users1" FromRole="users" ToRole="problem" />
+          <NavigationProperty Name="websession" Relationship="Self.fk_websession_users1" FromRole="users" ToRole="websession" />
+        </EntityType>
+        <EntityType Name="websession">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="exp_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="users_id" Type="Int32" Nullable="false" />
+          <Property Name="create_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="users" Relationship="Self.fk_websession_users1" FromRole="websession" ToRole="users" />
+        </EntityType>
+        <Association Name="fk_dealer_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="dealer" Type="Self.dealer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dealer">
+              <PropertyRef Name="users_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_problem_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="problem" Type="Self.problem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="problem">
+              <PropertyRef Name="users_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_websession_users1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="websession" Type="Self.websession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="websession">
+              <PropertyRef Name="users_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="sn_netEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cloud_srv" EntityType="Self.cloud_srv" />
+          <EntitySet Name="d_msg" EntityType="Self.d_msg" />
+          <EntitySet Name="dealer" EntityType="Self.dealer" />
+          <EntitySet Name="event_calendar" EntityType="Self.event_calendar" />
+          <EntitySet Name="istab" EntityType="Self.istab" />
+          <EntitySet Name="ma" EntityType="Self.ma" />
+          <EntitySet Name="mac_allowed" EntityType="Self.mac_allowed" />
+          <EntitySet Name="note_calendar" EntityType="Self.note_calendar" />
+          <EntitySet Name="problem" EntityType="Self.problem" />
+          <EntitySet Name="serial" EntityType="Self.serial" />
+          <EntitySet Name="serial_password" EntityType="Self.serial_password" />
+          <EntitySet Name="spy_log" EntityType="Self.spy_log" />
+          <EntitySet Name="support_note" EntityType="Self.support_note" />
+          <EntitySet Name="support_note_comment" EntityType="Self.support_note_comment" />
+          <EntitySet Name="training_calendar" EntityType="Self.training_calendar" />
+          <EntitySet Name="users" EntityType="Self.users" />
+          <EntitySet Name="websession" EntityType="Self.websession" />
+          <AssociationSet Name="fk_dealer_users1" Association="Self.fk_dealer_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="dealer" EntitySet="dealer" />
+          </AssociationSet>
+          <AssociationSet Name="fk_problem_users1" Association="Self.fk_problem_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="problem" EntitySet="problem" />
+          </AssociationSet>
+          <AssociationSet Name="fk_websession_users1" Association="Self.fk_websession_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="websession" EntitySet="websession" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="sn_netModelStoreContainer" CdmEntityContainer="sn_netEntities">
+          <EntitySetMapping Name="cloud_srv">
+            <EntityTypeMapping TypeName="sn_netModel.cloud_srv">
+              <MappingFragment StoreEntitySet="cloud_srv">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="sernum" ColumnName="sernum" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="rec_by" ColumnName="rec_by" />
+                <ScalarProperty Name="rec_date" ColumnName="rec_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="d_msg">
+            <EntityTypeMapping TypeName="sn_netModel.d_msg">
+              <MappingFragment StoreEntitySet="d_msg">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dealer" ColumnName="dealer" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="users_name" ColumnName="users_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dealer">
+            <EntityTypeMapping TypeName="sn_netModel.dealer">
+              <MappingFragment StoreEntitySet="dealer">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dealer1" ColumnName="dealer" />
+                <ScalarProperty Name="prenam" ColumnName="prenam" />
+                <ScalarProperty Name="compnam" ColumnName="compnam" />
+                <ScalarProperty Name="addr01" ColumnName="addr01" />
+                <ScalarProperty Name="addr02" ColumnName="addr02" />
+                <ScalarProperty Name="addr03" ColumnName="addr03" />
+                <ScalarProperty Name="zipcod" ColumnName="zipcod" />
+                <ScalarProperty Name="telnum" ColumnName="telnum" />
+                <ScalarProperty Name="faxnum" ColumnName="faxnum" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="busides" ColumnName="busides" />
+                <ScalarProperty Name="area" ColumnName="area" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="chgdat" ColumnName="chgdat" />
+                <ScalarProperty Name="users_id" ColumnName="users_id" />
+                <ScalarProperty Name="users_name" ColumnName="users_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="event_calendar">
+            <EntityTypeMapping TypeName="sn_netModel.event_calendar">
+              <MappingFragment StoreEntitySet="event_calendar">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="users_name" ColumnName="users_name" />
+                <ScalarProperty Name="realname" ColumnName="realname" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="from_time" ColumnName="from_time" />
+                <ScalarProperty Name="to_time" ColumnName="to_time" />
+                <ScalarProperty Name="event_type" ColumnName="event_type" />
+                <ScalarProperty Name="event_code" ColumnName="event_code" />
+                <ScalarProperty Name="customer" ColumnName="customer" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="med_cert" ColumnName="med_cert" />
+                <ScalarProperty Name="fine" ColumnName="fine" />
+                <ScalarProperty Name="rec_by" ColumnName="rec_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="istab">
+            <EntityTypeMapping TypeName="sn_netModel.istab">
+              <MappingFragment StoreEntitySet="istab">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tabtyp" ColumnName="tabtyp" />
+                <ScalarProperty Name="typcod" ColumnName="typcod" />
+                <ScalarProperty Name="abbreviate_en" ColumnName="abbreviate_en" />
+                <ScalarProperty Name="abbreviate_th" ColumnName="abbreviate_th" />
+                <ScalarProperty Name="typdes_en" ColumnName="typdes_en" />
+                <ScalarProperty Name="typdes_th" ColumnName="typdes_th" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ma">
+            <EntityTypeMapping TypeName="sn_netModel.ma">
+              <MappingFragment StoreEntitySet="ma">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="sernum" ColumnName="sernum" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="rec_by" ColumnName="rec_by" />
+                <ScalarProperty Name="rec_date" ColumnName="rec_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mac_allowed">
+            <EntityTypeMapping TypeName="sn_netModel.mac_allowed">
+              <MappingFragment StoreEntitySet="mac_allowed">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="mac_address" ColumnName="mac_address" />
+                <ScalarProperty Name="create_by" ColumnName="create_by" />
+                <ScalarProperty Name="create_at" ColumnName="create_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="note_calendar">
+            <EntityTypeMapping TypeName="sn_netModel.note_calendar">
+              <MappingFragment StoreEntitySet="note_calendar">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="group_maid" ColumnName="group_maid" />
+                <ScalarProperty Name="group_weekend" ColumnName="group_weekend" />
+                <ScalarProperty Name="max_leave" ColumnName="max_leave" />
+                <ScalarProperty Name="rec_by" ColumnName="rec_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="problem">
+            <EntityTypeMapping TypeName="sn_netModel.problem">
+              <MappingFragment StoreEntitySet="problem">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="probcod" ColumnName="probcod" />
+                <ScalarProperty Name="probdesc" ColumnName="probdesc" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="users_id" ColumnName="users_id" />
+                <ScalarProperty Name="users_name" ColumnName="users_name" />
+                <ScalarProperty Name="serial_id" ColumnName="serial_id" />
+                <ScalarProperty Name="serial_sernum" ColumnName="serial_sernum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="serial">
+            <EntityTypeMapping TypeName="sn_netModel.serial">
+              <MappingFragment StoreEntitySet="serial">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="sernum" ColumnName="sernum" />
+                <ScalarProperty Name="oldnum" ColumnName="oldnum" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="prenam" ColumnName="prenam" />
+                <ScalarProperty Name="compnam" ColumnName="compnam" />
+                <ScalarProperty Name="addr01" ColumnName="addr01" />
+                <ScalarProperty Name="addr02" ColumnName="addr02" />
+                <ScalarProperty Name="addr03" ColumnName="addr03" />
+                <ScalarProperty Name="zipcod" ColumnName="zipcod" />
+                <ScalarProperty Name="telnum" ColumnName="telnum" />
+                <ScalarProperty Name="faxnum" ColumnName="faxnum" />
+                <ScalarProperty Name="busityp" ColumnName="busityp" />
+                <ScalarProperty Name="busides" ColumnName="busides" />
+                <ScalarProperty Name="purdat" ColumnName="purdat" />
+                <ScalarProperty Name="expdat" ColumnName="expdat" />
+                <ScalarProperty Name="howknown" ColumnName="howknown" />
+                <ScalarProperty Name="area" ColumnName="area" />
+                <ScalarProperty Name="branch" ColumnName="branch" />
+                <ScalarProperty Name="manual" ColumnName="manual" />
+                <ScalarProperty Name="upfree" ColumnName="upfree" />
+                <ScalarProperty Name="refnum" ColumnName="refnum" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="chgdat" ColumnName="chgdat" />
+                <ScalarProperty Name="verext" ColumnName="verext" />
+                <ScalarProperty Name="verextdat" ColumnName="verextdat" />
+                <ScalarProperty Name="users_id" ColumnName="users_id" />
+                <ScalarProperty Name="users_name" ColumnName="users_name" />
+                <ScalarProperty Name="dealer_id" ColumnName="dealer_id" />
+                <ScalarProperty Name="dealer_dealer" ColumnName="dealer_dealer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="serial_password">
+            <EntityTypeMapping TypeName="sn_netModel.serial_password">
+              <MappingFragment StoreEntitySet="serial_password">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="sernum" ColumnName="sernum" />
+                <ScalarProperty Name="pass_word" ColumnName="pass_word" />
+                <ScalarProperty Name="rec_by" ColumnName="rec_by" />
+                <ScalarProperty Name="rec_date" ColumnName="rec_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="spy_log">
+            <EntityTypeMapping TypeName="sn_netModel.spy_log">
+              <MappingFragment StoreEntitySet="spy_log">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="users_name" ColumnName="users_name" />
+                <ScalarProperty Name="serial_sernum" ColumnName="serial_sernum" />
+                <ScalarProperty Name="compnam" ColumnName="compnam" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="support_note">
+            <EntityTypeMapping TypeName="sn_netModel.support_note">
+              <MappingFragment StoreEntitySet="support_note">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="users_name" ColumnName="users_name" />
+                <ScalarProperty Name="sernum" ColumnName="sernum" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="end_time" ColumnName="end_time" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="problem" ColumnName="problem" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="is_break" ColumnName="is_break" />
+                <ScalarProperty Name="reason" ColumnName="reason" />
+                <ScalarProperty Name="file_path" ColumnName="file_path" />
+                <ScalarProperty Name="rec_by" ColumnName="rec_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="support_note_comment">
+            <EntityTypeMapping TypeName="sn_netModel.support_note_comment">
+              <MappingFragment StoreEntitySet="support_note_comment">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="note_id" ColumnName="note_id" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="file_path" ColumnName="file_path" />
+                <ScalarProperty Name="rec_by" ColumnName="rec_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="training_calendar">
+            <EntityTypeMapping TypeName="sn_netModel.training_calendar">
+              <MappingFragment StoreEntitySet="training_calendar">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="course_type" ColumnName="course_type" />
+                <ScalarProperty Name="trainer" ColumnName="trainer" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="term" ColumnName="term" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="rec_by" ColumnName="rec_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="sn_netModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="userpassword" ColumnName="userpassword" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="level" ColumnName="level" />
+                <ScalarProperty Name="usergroup" ColumnName="usergroup" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="allowed_web_login" ColumnName="allowed_web_login" />
+                <ScalarProperty Name="training_expert" ColumnName="training_expert" />
+                <ScalarProperty Name="max_absent" ColumnName="max_absent" />
+                <ScalarProperty Name="create_at" ColumnName="create_at" />
+                <ScalarProperty Name="last_use" ColumnName="last_use" />
+                <ScalarProperty Name="rec_by" ColumnName="rec_by" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="websession">
+            <EntityTypeMapping TypeName="sn_netModel.websession">
+              <MappingFragment StoreEntitySet="websession">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="exp_time" ColumnName="exp_time" />
+                <ScalarProperty Name="users_id" ColumnName="users_id" />
+                <ScalarProperty Name="create_time" ColumnName="create_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

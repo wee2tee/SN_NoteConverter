@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SN_NoteConverter</RootNamespace>
     <AssemblyName>SN_NoteConverter</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,8 +33,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CC">
+      <HintPath>..\_DLL\CC.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -49,8 +61,110 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\cloud_srv.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\dealer.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\d_msg.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\event_calendar.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\event_calendar2.cs">
+      <DependentUpon>SN_NoteModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\istab.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ma.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\mac_allowed.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\note2.cs">
+      <DependentUpon>SN_NoteModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\note_calendar.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\note_calendar2.cs">
+      <DependentUpon>SN_NoteModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\note_comment2.cs">
+      <DependentUpon>SN_NoteModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\note_istab2.cs">
+      <DependentUpon>SN_NoteModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\problem.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\serial.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\serial_password.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SN_NetModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SN_NetModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SN_NetModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SN_NetModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SN_NetModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SN_NoteModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SN_NoteModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SN_NoteModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SN_NoteModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SN_NoteModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SN_NoteModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\spy_log.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\support_note.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\support_note_comment.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\training_calendar.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\training_calendar2.cs">
+      <DependentUpon>SN_NoteModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\users.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\websession.cs">
+      <DependentUpon>SN_NetModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -59,7 +173,24 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
+    <EntityDeploy Include="Model\SN_NetModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SN_NetModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Model\SN_NetModel.edmx.diagram">
+      <DependentUpon>SN_NetModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Model\SN_NoteModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SN_NoteModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Model\SN_NoteModel.edmx.diagram">
+      <DependentUpon>SN_NoteModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -69,6 +200,34 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\SN_NetModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SN_NetModel.edmx</DependentUpon>
+      <LastGenOutput>SN_NetModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\SN_NetModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SN_NetModel.edmx</DependentUpon>
+      <LastGenOutput>SN_NetModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\SN_NoteModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SN_NoteModel.edmx</DependentUpon>
+      <LastGenOutput>SN_NoteModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\SN_NoteModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SN_NoteModel.edmx</DependentUpon>
+      <LastGenOutput>SN_NoteModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model2\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
