@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv1 = new CC.XDatagrid();
@@ -36,6 +38,8 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btnLoadOldData = new System.Windows.Forms.Button();
             this.btnStartImport = new System.Windows.Forms.Button();
+            this.btnStopImport = new System.Windows.Forms.Button();
+            this.lblProgress = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv2)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -48,15 +52,23 @@
             this.dgv1.AllowUserToDeleteRows = false;
             this.dgv1.AllowUserToResizeColumns = false;
             this.dgv1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(207)))), ((int)(((byte)(179)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(207)))), ((int)(((byte)(179)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 9.75F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgv1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgv1.EnableHeadersVisualStyles = false;
@@ -69,7 +81,7 @@
             this.dgv1.RowHeadersVisible = false;
             this.dgv1.RowTemplate.Height = 26;
             this.dgv1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv1.Size = new System.Drawing.Size(426, 441);
+            this.dgv1.Size = new System.Drawing.Size(452, 388);
             this.dgv1.StandardTab = true;
             this.dgv1.TabIndex = 0;
             // 
@@ -80,28 +92,36 @@
             this.dgv2.AllowUserToDeleteRows = false;
             this.dgv2.AllowUserToResizeColumns = false;
             this.dgv2.AllowUserToResizeRows = false;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(207)))), ((int)(((byte)(179)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgv2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(207)))), ((int)(((byte)(179)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 9.75F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.dgv2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv2.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgv2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgv2.EnableHeadersVisualStyles = false;
             this.dgv2.FillEmptyRow = false;
             this.dgv2.FocusedRowBorderRedLine = false;
-            this.dgv2.Location = new System.Drawing.Point(435, 3);
+            this.dgv2.Location = new System.Drawing.Point(461, 3);
             this.dgv2.MultiSelect = false;
             this.dgv2.Name = "dgv2";
             this.dgv2.ReadOnly = true;
             this.dgv2.RowHeadersVisible = false;
             this.dgv2.RowTemplate.Height = 26;
             this.dgv2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv2.Size = new System.Drawing.Size(426, 441);
+            this.dgv2.Size = new System.Drawing.Size(452, 388);
             this.dgv2.StandardTab = true;
             this.dgv2.TabIndex = 0;
             // 
@@ -119,7 +139,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(864, 447);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(916, 394);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // comboBox1
@@ -151,12 +171,35 @@
             this.btnStartImport.TabIndex = 5;
             this.btnStartImport.Text = "Start Import";
             this.btnStartImport.UseVisualStyleBackColor = true;
+            this.btnStartImport.Click += new System.EventHandler(this.btnStartImport_Click);
+            // 
+            // btnStopImport
+            // 
+            this.btnStopImport.Enabled = false;
+            this.btnStopImport.Location = new System.Drawing.Point(466, 20);
+            this.btnStopImport.Name = "btnStopImport";
+            this.btnStopImport.Size = new System.Drawing.Size(90, 25);
+            this.btnStopImport.TabIndex = 5;
+            this.btnStopImport.Text = "Stop Import";
+            this.btnStopImport.UseVisualStyleBackColor = true;
+            this.btnStopImport.Click += new System.EventHandler(this.btnStopImport_Click);
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblProgress.Location = new System.Drawing.Point(769, 45);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(150, 19);
+            this.lblProgress.TabIndex = 6;
+            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(870, 517);
+            this.ClientSize = new System.Drawing.Size(922, 464);
+            this.Controls.Add(this.lblProgress);
+            this.Controls.Add(this.btnStopImport);
             this.Controls.Add(this.btnStartImport);
             this.Controls.Add(this.btnLoadOldData);
             this.Controls.Add(this.comboBox1);
@@ -181,6 +224,8 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button btnLoadOldData;
         private System.Windows.Forms.Button btnStartImport;
+        private System.Windows.Forms.Button btnStopImport;
+        private System.Windows.Forms.Label lblProgress;
     }
 }
 
