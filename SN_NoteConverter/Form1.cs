@@ -37,7 +37,7 @@ namespace SN_NoteConverter
         private BindingList<training_calendar> training_calendar;
         private BackgroundWorker wrk;
         private List<users> users;
-        string conn_str_to_new_server = "Server=localhost;Database=sn_notes;Uid=root;Pwd=12345;Charset=utf8";
+        string conn_str_to_new_server = "Server=localhost;Database=sn_note;Uid=root;Pwd=12345;Charset=utf8";
         MySqlConnection conn_to_new_server;
         MySqlCommand cmd;
 
@@ -154,7 +154,7 @@ namespace SN_NoteConverter
                             }
 
                             this.cmd = this.conn_to_new_server.CreateCommand();
-                            this.cmd.CommandText = "Insert into note_istab2 (id, abbreviate_en, abbreviate_th, chgby, chgdat, creby, credat, tabtyp, typcod, typdes_en, typdes_th, use_pattern) values(@id, @abbr_en, @abbr_th, @chgby, @chgdat, @creby, @credat, @tabtyp, @typcod, @typdes_en, @typdes_th, @use_pattern)";
+                            this.cmd.CommandText = "Insert into note_istab (id, abbreviate_en, abbreviate_th, chgby, chgdat, creby, credat, tabtyp, typcod, typdes_en, typdes_th, use_pattern) values(@id, @abbr_en, @abbr_th, @chgby, @chgdat, @creby, @credat, @tabtyp, @typcod, @typdes_en, @typdes_th, @use_pattern)";
                             this.cmd.Parameters.AddWithValue("@id", this.istab[i].id);
                             this.cmd.Parameters.AddWithValue("@abbr_en", this.istab[i].abbreviate_en);
                             this.cmd.Parameters.AddWithValue("@abbr_th", this.istab[i].abbreviate_th);
@@ -199,28 +199,45 @@ namespace SN_NoteConverter
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
                 this.conn_to_new_server.Open();
-                //sn_notesEntities note = new sn_notesEntities();
-                //var last_imported_note = note.note2.OrderByDescending(n => n.id).FirstOrDefault();
-                MySqlCommand command = this.conn_to_new_server.CreateCommand();
-                command.CommandText = "Select id from note2 Order By id DESC Limit 0, 1";
-                MySqlDataReader reader = command.ExecuteReader();
-
                 int ndx = 0;
 
-                if (reader.HasRows)
+                try
                 {
-                    int last_id = -1;
+                    MySqlCommand command = this.conn_to_new_server.CreateCommand();
+                    command.CommandText = "Select id From note Order By id DESC Limit 0,1";
+                    MySqlDataReader reader = command.ExecuteReader();
+                    int id = -1;
                     while (reader.Read())
                     {
-                        last_id = (int)reader["id"];
+                        id = Convert.ToInt32(reader["id"]);
                     }
 
-                    var ln = this.support_note.Where(n => n.id == last_id).FirstOrDefault();
-                    if (ln != null)
+                    if(id > -1)
                     {
-                        ndx = this.support_note.IndexOf(ln) + 1;
+                        var last_imported_note = this.support_note.Where(s => s.id == id).FirstOrDefault();
+                        if(last_imported_note != null)
+                        {
+                            ndx = this.support_note.IndexOf(last_imported_note) + 1;
+                        }
                     }
+
+                    reader.Close();
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                //sn_notesEntities note = new sn_notesEntities();
+                //var last_imported_note = note.note2.OrderByDescending(n => n.id).FirstOrDefault();
+                //if(last_imported_note != null)
+                //{
+                //    var prev_note_imported = this.support_note.Where(s => s.id == last_imported_note.id).FirstOrDefault();
+                //    if(prev_note_imported != null)
+                //    {
+                //        ndx = this.support_note.IndexOf(prev_note_imported) + 1;
+                //    }
+                //}
 
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
@@ -239,7 +256,7 @@ namespace SN_NoteConverter
                             var user = this.users.Where(u => u.username.Trim() == this.support_note[i].support_note.users_name.Trim()).FirstOrDefault();
 
                             this.cmd = this.conn_to_new_server.CreateCommand();
-                            this.cmd.CommandText = "Insert into note2 (id, users_id, date, users_name, sernum, contact, start_time, end_time, duration, problem, remark, is_break, reason, file_path, rec_by) values (@id, @users_id, @date, @users_name, @sernum, @contact, @start_time, @end_time, @duration, @problem, @remark, @is_break, @reason, @file_path, @rec_by)";
+                            this.cmd.CommandText = "Insert into note (id, users_id, date, users_name, sernum, contact, start_time, end_time, duration, problem, remark, is_break, reason, file_path, rec_by) values (@id, @users_id, @date, @users_name, @sernum, @contact, @start_time, @end_time, @duration, @problem, @remark, @is_break, @reason, @file_path, @rec_by)";
                             this.cmd.Parameters.AddWithValue("@id", this.support_note[i].support_note.id);
                             this.cmd.Parameters.AddWithValue("@users_id", (user != null ? (int?)user.id : null));
                             this.cmd.Parameters.AddWithValue("@date", this.support_note[i].support_note.date);
@@ -304,8 +321,15 @@ namespace SN_NoteConverter
                             }
 
                             this.cmd = this.conn_to_new_server.CreateCommand();
-                            this.cmd.CommandText = "Insert into note_comment";
-                            this.cmd.Parameters.AddWithValue("", this.support_note_comment[i].id);
+                            this.cmd.CommandText = "Insert into note_comment (id, date, description, file_path, note_id, rec_by, type) values (@id, @date, @description, @file_path, @note_id, @rec_by, @type)";
+                            this.cmd.Parameters.AddWithValue("@id", this.support_note_comment[i].id);
+                            this.cmd.Parameters.AddWithValue("@date", this.support_note_comment[i].date);
+                            this.cmd.Parameters.AddWithValue("@description", this.support_note_comment[i].description);
+                            this.cmd.Parameters.AddWithValue("@file_path", this.support_note_comment[i].file_path);
+                            this.cmd.Parameters.AddWithValue("@note_id", this.support_note_comment[i].note_id);
+                            this.cmd.Parameters.AddWithValue("@rec_by", this.support_note_comment[i].rec_by);
+                            this.cmd.Parameters.AddWithValue("@type", this.support_note_comment[i].type);
+                            this.cmd.ExecuteNonQuery();
                             //note.note_comment2.Add(new note_comment2
                             //{
                             //    id = this.support_note_comment[i].id,
@@ -349,7 +373,7 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                sn_notesEntities note = new sn_notesEntities();
+                this.conn_to_new_server.Open();
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
                     for (int i = 0; i < this.note_calendar.Count; i++)
@@ -364,19 +388,17 @@ namespace SN_NoteConverter
                                 return;
                             }
 
-                            note.note_calendar2.Add(new note_calendar2
-                            {
-                                id = this.note_calendar[i].id,
-                                date = this.note_calendar[i].date,
-                                description = this.note_calendar[i].description,
-                                group_maid = this.note_calendar[i].group_maid,
-                                group_weekend = this.note_calendar[i].group_weekend,
-                                max_leave = this.note_calendar[i].max_leave,
-                                rec_by = this.note_calendar[i].rec_by,
-                                type = this.note_calendar[i].type
-                            });
-
-                            note.SaveChanges();
+                            this.cmd = this.conn_to_new_server.CreateCommand();
+                            this.cmd.CommandText = "Insert into note_calendar (id, date, description, group_maid, group_weekend, max_leave, rec_by, type) values (@id, @date, @description, @group_maid, @group_weekend, @max_leave, @rec_by, @type)";
+                            this.cmd.Parameters.AddWithValue("@id", this.note_calendar[i].id);
+                            this.cmd.Parameters.AddWithValue("@date", this.note_calendar[i].date);
+                            this.cmd.Parameters.AddWithValue("@description", this.note_calendar[i].description);
+                            this.cmd.Parameters.AddWithValue("@group_maid", this.note_calendar[i].group_maid);
+                            this.cmd.Parameters.AddWithValue("@group_weekend", this.note_calendar[i].group_weekend);
+                            this.cmd.Parameters.AddWithValue("@max_leave", this.note_calendar[i].max_leave);
+                            this.cmd.Parameters.AddWithValue("@rec_by", this.note_calendar[i].rec_by);
+                            this.cmd.Parameters.AddWithValue("@type", this.note_calendar[i].type);
+                            this.cmd.ExecuteNonQuery();
 
                             this.wrk.ReportProgress(i + 1);
                         }
@@ -393,7 +415,7 @@ namespace SN_NoteConverter
                     this.btnLoadOldData.Enabled = true;
                     this.btnStartImport.Enabled = false;
                     this.btnStopImport.Enabled = false;
-                    note.Dispose();
+                    this.conn_to_new_server.Close();
                 };
                 this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
                 {
@@ -407,10 +429,39 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                sn_notesEntities note = new sn_notesEntities();
+                this.conn_to_new_server.Open();
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
-                    List<note_istab2> istab = note.note_istab2.ToList();
+                    List<XNote_Istab> istabs = new List<XNote_Istab>();
+                    MySqlCommand cmd_istab = this.conn_to_new_server.CreateCommand();
+                    cmd_istab.CommandText = "Select * From note_istab";
+                    MySqlDataReader reader = cmd_istab.ExecuteReader();
+                    try
+                    {
+                        while (reader.Read())
+                        {
+                            istabs.Add(new XNote_Istab
+                            {
+                                id = (int)reader["id"],
+                                abbreviate_en = (string)reader["abbreviate_en"],
+                                abbreviate_th = (string)reader["abbreviate_th"],
+                                chgby = reader.IsDBNull(reader.GetOrdinal("chgby")) ? null : (string)reader["chgby"],
+                                chgdat = reader.IsDBNull(reader.GetOrdinal("chgdat")) ? null : (DateTime?)reader["chgdat"],
+                                creby = (string)reader["creby"],
+                                credat = (DateTime)reader["credat"],
+                                tabtyp = (string)reader["tabtyp"],
+                                typcod = (string)reader["typcod"],
+                                typdes_en = (string)reader["typdes_en"],
+                                typdes_th = (string)reader["typdes_th"],
+                                use_pattern = (bool)reader["use_pattern"]
+                            });
+                        }
+                        reader.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(" ==> " + ex.Message);
+                    }
 
                     for (int i = 0; i < this.event_calendar.Count; i++)
                     {
@@ -423,28 +474,26 @@ namespace SN_NoteConverter
                                 this.btnStopImport.Enabled = false;
                                 return;
                             }
+                            var istab = istabs.Where(x => x.tabtyp == this.event_calendar[i].event_type && x.typcod == this.event_calendar[i].event_code).FirstOrDefault();
 
-                            note_istab2 istab_event = istab.Where(ev => ev.tabtyp == this.event_calendar[i].event_type && ev.typcod == this.event_calendar[i].event_code).FirstOrDefault();
-                            note.event_calendar2.Add(new event_calendar2
-                            {
-                                id = this.event_calendar[i].id,
-                                customer = this.event_calendar[i].customer,
-                                date = this.event_calendar[i].date,
-                                event_code = this.event_calendar[i].event_code,
-                                event_code_id = istab_event != null ? (int?)istab_event.id : null,
-                                event_type = this.event_calendar[i].event_type,
-                                fine = this.event_calendar[i].fine,
-                                from_time = this.event_calendar[i].from_time.Substring(0,5),
-                                med_cert = this.event_calendar[i].med_cert,
-                                realname = this.event_calendar[i].realname,
-                                rec_by = this.event_calendar[i].rec_by,
-                                series = null,
-                                status = this.event_calendar[i].status,
-                                to_time = this.event_calendar[i].to_time.Substring(0,5),
-                                users_name = this.event_calendar[i].users_name
-                            });
-
-                            note.SaveChanges();
+                            this.cmd = this.conn_to_new_server.CreateCommand();
+                            this.cmd.CommandText = "Insert into event_calendar (id, customer, date, event_code, event_code_id, event_type, fine, from_time, med_cert, realname, rec_by, series, status, to_time, users_name) values (@id, @customer, @date, @event_code, @event_code_id, @event_type, @fine, @from_time, @med_cert, @realname, @rec_by, @series, @status, @to_time, @users_name)";
+                            this.cmd.Parameters.AddWithValue("@id", this.event_calendar[i].id);
+                            this.cmd.Parameters.AddWithValue("@customer", this.event_calendar[i].customer);
+                            this.cmd.Parameters.AddWithValue("@date", this.event_calendar[i].date);
+                            this.cmd.Parameters.AddWithValue("@event_code", this.event_calendar[i].event_code);
+                            this.cmd.Parameters.AddWithValue("@event_code_id", istab != null ? (int?)istab.id : null);
+                            this.cmd.Parameters.AddWithValue("@event_type", this.event_calendar[i].event_type);
+                            this.cmd.Parameters.AddWithValue("@fine", this.event_calendar[i].fine);
+                            this.cmd.Parameters.AddWithValue("@from_time", this.event_calendar[i].from_time.Substring(0, 5));
+                            this.cmd.Parameters.AddWithValue("@med_cert", this.event_calendar[i].med_cert);
+                            this.cmd.Parameters.AddWithValue("@realname", this.event_calendar[i].realname);
+                            this.cmd.Parameters.AddWithValue("@rec_by", this.event_calendar[i].rec_by);
+                            this.cmd.Parameters.AddWithValue("@series", null);
+                            this.cmd.Parameters.AddWithValue("@status", this.event_calendar[i].status);
+                            this.cmd.Parameters.AddWithValue("@to_time", this.event_calendar[i].to_time.Substring(0, 5));
+                            this.cmd.Parameters.AddWithValue("@users_name", this.event_calendar[i].users_name);
+                            this.cmd.ExecuteNonQuery();
 
                             this.wrk.ReportProgress(i + 1);
                         }
@@ -461,7 +510,7 @@ namespace SN_NoteConverter
                     this.btnLoadOldData.Enabled = true;
                     this.btnStartImport.Enabled = false;
                     this.btnStopImport.Enabled = false;
-                    note.Dispose();
+                    this.conn_to_new_server.Close();
                 };
                 this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
                 {
@@ -475,7 +524,8 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                sn_notesEntities note = new sn_notesEntities();
+                //sn_notesEntities note = new sn_notesEntities();
+                this.conn_to_new_server.Open();
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
                     for (int i = 0; i < this.training_calendar.Count; i++)
@@ -489,20 +539,17 @@ namespace SN_NoteConverter
                                 this.btnStopImport.Enabled = false;
                                 return;
                             }
-
-                            note.training_calendar2.Add(new training_calendar2
-                            {
-                                id = this.training_calendar[i].id,
-                                course_type = this.training_calendar[i].course_type,
-                                date = this.training_calendar[i].date,
-                                rec_by = this.training_calendar[i].rec_by,
-                                remark = this.training_calendar[i].remark,
-                                status = this.training_calendar[i].status,
-                                term = this.training_calendar[i].term,
-                                trainer = this.training_calendar[i].trainer
-                            });
-
-                            note.SaveChanges();
+                            this.cmd = this.conn_to_new_server.CreateCommand();
+                            this.cmd.CommandText = "Insert into training_calendar (id, course_type, date, rec_by, remark, status, term, trainer) values (@id, @course_type, @date, @rec_by, @remark, @status, @term, @trainer)";
+                            this.cmd.Parameters.AddWithValue("@id", this.training_calendar[i].id);
+                            this.cmd.Parameters.AddWithValue("@course_type", this.training_calendar[i].course_type);
+                            this.cmd.Parameters.AddWithValue("@date", this.training_calendar[i].date);
+                            this.cmd.Parameters.AddWithValue("@rec_by", this.training_calendar[i].rec_by);
+                            this.cmd.Parameters.AddWithValue("@remark", this.training_calendar[i].remark);
+                            this.cmd.Parameters.AddWithValue("@status", this.training_calendar[i].status);
+                            this.cmd.Parameters.AddWithValue("@term", this.training_calendar[i].term);
+                            this.cmd.Parameters.AddWithValue("@trainer", this.training_calendar[i].trainer);
+                            this.cmd.ExecuteNonQuery();
 
                             this.wrk.ReportProgress(i + 1);
                         }
@@ -519,7 +566,7 @@ namespace SN_NoteConverter
                     this.btnLoadOldData.Enabled = true;
                     this.btnStartImport.Enabled = false;
                     this.btnStopImport.Enabled = false;
-                    note.Dispose();
+                    this.conn_to_new_server.Close();
                 };
                 this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
                 {
@@ -544,5 +591,21 @@ namespace SN_NoteConverter
         public DateTime? date { get; set; }
         public string username { get; set; }
         public support_note support_note { get; set; }
+    }
+
+    public class XNote_Istab
+    {
+        public int id { get; set; }
+        public string tabtyp { get; set; }
+        public string typcod { get; set; }
+        public string abbreviate_en { get; set; }
+        public string abbreviate_th { get; set; }
+        public string typdes_en { get; set; }
+        public string typdes_th { get; set; }
+        public bool use_pattern { get; set; }
+        public string creby { get; set; }
+        public DateTime credat { get; set; }
+        public string chgby { get; set; }
+        public DateTime? chgdat { get; set; }
     }
 }
