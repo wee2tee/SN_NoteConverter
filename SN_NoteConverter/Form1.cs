@@ -20,15 +20,21 @@ namespace SN_NoteConverter
     {
         private enum TableName
         {
+            USERS,
             NOTE_ISTAB,
             NOTE,
             NOTE_COMMENT,
             NOTE_CALENDAR,
             EVENT_CALENDAR,
-            TRAINING_CALENDAR
+            TRAINING_CALENDAR,
+            CLOUD_SRV,
+            MA,
+            MAC_ALLOWED,
+            SERIAL_PASSWORD
         }
 
         private TableName tbl_name;
+        private BindingList<users> old_users;
         private BindingList<istab> istab;
         private BindingList<SupportNote_Min> support_note;
         private BindingList<support_note_comment> support_note_comment;
@@ -37,7 +43,11 @@ namespace SN_NoteConverter
         private BindingList<training_calendar> training_calendar;
         private BackgroundWorker wrk;
         private List<users> users;
-        string conn_str_to_new_server = "Server=localhost;Database=sn_note;Uid=root;Pwd=12345;Charset=utf8";
+        private string new_db_server { get { return this.txtNewServerName.Text; } }
+        private string new_db_name { get { return this.txtNewDbName.Text; } }
+        private string new_uid { get { return this.txtNewUid.Text; } }
+        private string new_pwd { get { return this.txtNewPassword.Text; } }
+        private string conn_str_to_new_server;
         MySqlConnection conn_to_new_server;
         MySqlCommand cmd;
 
@@ -48,12 +58,12 @@ namespace SN_NoteConverter
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.conn_to_new_server = new MySqlConnection(this.conn_str_to_new_server);
+            //this.conn_to_new_server = new MySqlConnection(this.conn_str_to_new_server);
             Enum.GetValues(typeof(TableName)).Cast<TableName>().ToList().ForEach(i => this.comboBox1.Items.Add(new XDropdownListItem { Text = i.ToString(), Value = i }));
-            using (sn_netEntities sn = new sn_netEntities())
-            {
-                this.users = sn.users.ToList();
-            }
+            //using (sn_netEntities sn = new sn_netEntities())
+            //{
+            //    this.users = sn.users.ToList();
+            //}
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -64,73 +74,173 @@ namespace SN_NoteConverter
 
         private void btnLoadOldData_Click(object sender, EventArgs e)
         {
-            using (sn_netEntities sn = new sn_netEntities())
+            try
             {
-                switch (this.tbl_name)
+                using (sn_netEntities sn = DBX.DataSet(this.txtOldSrv.Text, this.txtOldDB.Text, this.txtOldUid.Text, this.txtOldPwd.Text))
                 {
-                    case TableName.NOTE_ISTAB:
-                        this.istab = new BindingList<istab>(sn.istab.Where(i => i.tabtyp == "06" || i.tabtyp == "07").OrderBy(i => i.id).ToList());
-                        this.dgv1.DataSource = this.istab;
-                        break;
-                    case TableName.NOTE:
-                        this.support_note = new BindingList<SupportNote_Min>(sn.support_note.OrderBy(s => s.id).Select(s => new SupportNote_Min { id = s.id, support_note = s, date = s.date, username = s.users_name }).ToList());
-                        Console.WriteLine(" ===> Load complete");
-                        this.dgv1.DataSource = this.support_note;
-                        break;
-                    case TableName.NOTE_COMMENT:
-                        this.support_note_comment = new BindingList<support_note_comment>(sn.support_note_comment.OrderBy(s => s.id).ToList());
-                        this.dgv1.DataSource = this.support_note_comment;
-                        break;
-                    case TableName.NOTE_CALENDAR:
-                        this.note_calendar = new BindingList<note_calendar>(sn.note_calendar.OrderBy(n => n.id).ToList());
-                        this.dgv1.DataSource = this.note_calendar;
-                        break;
-                    case TableName.EVENT_CALENDAR:
-                        this.event_calendar = new BindingList<event_calendar>(sn.event_calendar.OrderBy(i => i.id).ToList());
-                        this.dgv1.DataSource = this.event_calendar;
-                        break;
-                    case TableName.TRAINING_CALENDAR:
-                        this.training_calendar = new BindingList<training_calendar>(sn.training_calendar.OrderBy(t => t.id).ToList());
-                        this.dgv1.DataSource = this.training_calendar;
-                        break;
-                    default:
-                        break;
-                }
+                    this.users = sn.users.ToList();
+
+                    switch (this.tbl_name)
+                    {
+                        case TableName.USERS:
+                            this.old_users = new BindingList<users>(sn.users.ToList());
+                            this.dgv1.DataSource = this.old_users;
+                            break;
+                        case TableName.NOTE_ISTAB:
+                            this.istab = new BindingList<istab>(sn.istab.Where(i => i.tabtyp == "06" || i.tabtyp == "07").OrderBy(i => i.id).ToList());
+                            this.dgv1.DataSource = this.istab;
+                            break;
+                        case TableName.NOTE:
+                            this.support_note = new BindingList<SupportNote_Min>(sn.support_note.OrderBy(s => s.id).Select(s => new SupportNote_Min { id = s.id, support_note = s, date = s.date, username = s.users_name }).ToList());
+                            Console.WriteLine(" ===> Load complete");
+                            this.dgv1.DataSource = this.support_note;
+                            break;
+                        case TableName.NOTE_COMMENT:
+                            this.support_note_comment = new BindingList<support_note_comment>(sn.support_note_comment.OrderBy(s => s.id).ToList());
+                            this.dgv1.DataSource = this.support_note_comment;
+                            break;
+                        case TableName.NOTE_CALENDAR:
+                            this.note_calendar = new BindingList<note_calendar>(sn.note_calendar.OrderBy(n => n.id).ToList());
+                            this.dgv1.DataSource = this.note_calendar;
+                            break;
+                        case TableName.EVENT_CALENDAR:
+                            this.event_calendar = new BindingList<event_calendar>(sn.event_calendar.OrderBy(i => i.id).ToList());
+                            this.dgv1.DataSource = this.event_calendar;
+                            break;
+                        case TableName.TRAINING_CALENDAR:
+                            this.training_calendar = new BindingList<training_calendar>(sn.training_calendar.OrderBy(t => t.id).ToList());
+                            this.dgv1.DataSource = this.training_calendar;
+                            break;
+                        case TableName.CLOUD_SRV:
+
+                            break;
+                        case TableName.MA:
+
+                            break;
+                        case TableName.MAC_ALLOWED:
+
+                            break;
+                        case TableName.SERIAL_PASSWORD:
+
+                            break;
+                        default:
+                            break;
+                    }
 
                 ((Button)sender).Enabled = false;
-                this.btnStartImport.Enabled = true;
+                    this.btnStartImport.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnStartImport_Click(object sender, EventArgs e)
         {
-            this.btnLoadOldData.Enabled = false;
-            ((Button)sender).Enabled = false;
-            this.btnStopImport.Enabled = true;
-
-            switch (this.tbl_name)
+            try
             {
-                case TableName.NOTE_ISTAB:
-                    this.ImportIstab();
-                    break;
-                case TableName.NOTE:
-                    this.ImportNote();
-                    break;
-                case TableName.NOTE_COMMENT:
-                    this.ImportNoteComment();
-                    break;
-                case TableName.NOTE_CALENDAR:
-                    this.ImportNoteCalendar();
-                    break;
-                case TableName.EVENT_CALENDAR:
-                    this.ImportEventCalendar();
-                    break;
-                case TableName.TRAINING_CALENDAR:
-                    this.ImportTrainingCalendar();
-                    break;
-                default:
-                    MessageBox.Show("Please select table to import");
-                    break;
+                this.conn_str_to_new_server = "Server=" + this.new_db_server + ";Database=" + this.new_db_name + ";Uid=" + this.new_uid + ";Pwd=" + this.new_pwd + ";Charset=utf8";
+                this.conn_to_new_server = new MySqlConnection(this.conn_str_to_new_server);
+                this.conn_to_new_server.Open();
+                this.btnLoadOldData.Enabled = false;
+                ((Button)sender).Enabled = false;
+                this.btnStopImport.Enabled = true;
+
+                switch (this.tbl_name)
+                {
+                    case TableName.USERS:
+                        this.ImportUsers();
+                        break;
+                    case TableName.NOTE_ISTAB:
+                        this.ImportIstab();
+                        break;
+                    case TableName.NOTE:
+                        this.ImportNote();
+                        break;
+                    case TableName.NOTE_COMMENT:
+                        this.ImportNoteComment();
+                        break;
+                    case TableName.NOTE_CALENDAR:
+                        this.ImportNoteCalendar();
+                        break;
+                    case TableName.EVENT_CALENDAR:
+                        this.ImportEventCalendar();
+                        break;
+                    case TableName.TRAINING_CALENDAR:
+                        this.ImportTrainingCalendar();
+                        break;
+                    default:
+                        MessageBox.Show("Please select table to import");
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        private void ImportUsers()
+        {
+            using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
+            {
+                this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
+                {
+                    for (int i = 0; i < this.users.Count; i++)
+                    {
+                        try
+                        {
+                            if (this.wrk.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                this.btnLoadOldData.Enabled = true;
+                                this.btnStopImport.Enabled = false;
+                                return;
+                            }
+
+                            this.cmd = this.conn_to_new_server.CreateCommand();
+                            this.cmd.CommandText = "Insert into users (id, username, userpassword, name, email, level, usergroup_id, status, allowed_web_login, training_expert, max_absent, create_at, last_use, rec_by) values(@id, @username, @userpassword, @name, @email, @level, @usergroup_id, @status, @allowed_web_login, @training_expert, @max_absent, @create_at, @last_use, @rec_by)";
+                            this.cmd.Parameters.AddWithValue("@id", this.users[i].id);
+                            this.cmd.Parameters.AddWithValue("@username", this.users[i].username);
+                            this.cmd.Parameters.AddWithValue("@userpassword", this.users[i].username.EncryptToBytesString());
+                            this.cmd.Parameters.AddWithValue("@name", this.users[i].name);
+                            this.cmd.Parameters.AddWithValue("@email", this.users[i].email);
+                            this.cmd.Parameters.AddWithValue("@level", this.users[i].level);
+                            this.cmd.Parameters.AddWithValue("@usergroup_id", null);
+                            this.cmd.Parameters.AddWithValue("@status", this.users[i].status);
+                            this.cmd.Parameters.AddWithValue("@allowed_web_login", this.users[i].allowed_web_login);
+                            this.cmd.Parameters.AddWithValue("@training_expert", this.users[i].training_expert);
+                            this.cmd.Parameters.AddWithValue("@max_absent", this.users[i].max_absent);
+                            this.cmd.Parameters.AddWithValue("@create_at", this.users[i].create_at);
+                            this.cmd.Parameters.AddWithValue("@last_use", this.users[i].last_use);
+                            this.cmd.Parameters.AddWithValue("@rec_by", this.users[i].rec_by);
+                            this.cmd.ExecuteNonQuery();
+
+                            this.wrk.ReportProgress(i + 1);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            continue;
+                        }
+                    }
+                };
+                this.wrk.RunWorkerCompleted += delegate (object sender, RunWorkerCompletedEventArgs e)
+                {
+                    MessageBox.Show("Import completed.");
+                    this.btnLoadOldData.Enabled = true;
+                    this.btnStartImport.Enabled = false;
+                    this.btnStopImport.Enabled = false;
+                    this.conn_to_new_server.Close();
+                };
+                this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
+                {
+                    this.lblProgress.Text = e.ProgressPercentage.ToString() + " / " + this.users.Count.ToString();
+                };
+                this.wrk.RunWorkerAsync();
             }
         }
 
@@ -138,7 +248,6 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                this.conn_to_new_server.Open();
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
                     for (int i = 0; i < this.istab.Count; i++)
@@ -198,7 +307,6 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                this.conn_to_new_server.Open();
                 int ndx = 0;
 
                 try
@@ -227,17 +335,6 @@ namespace SN_NoteConverter
                 {
                     MessageBox.Show(ex.Message);
                 }
-
-                //sn_notesEntities note = new sn_notesEntities();
-                //var last_imported_note = note.note2.OrderByDescending(n => n.id).FirstOrDefault();
-                //if(last_imported_note != null)
-                //{
-                //    var prev_note_imported = this.support_note.Where(s => s.id == last_imported_note.id).FirstOrDefault();
-                //    if(prev_note_imported != null)
-                //    {
-                //        ndx = this.support_note.IndexOf(prev_note_imported) + 1;
-                //    }
-                //}
 
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
@@ -289,7 +386,6 @@ namespace SN_NoteConverter
                     this.btnLoadOldData.Enabled = true;
                     this.btnStartImport.Enabled = false;
                     this.btnStopImport.Enabled = false;
-                    //note.Dispose();
                     this.conn_to_new_server.Close();
                 };
                 this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
@@ -304,8 +400,6 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                //sn_notesEntities note = new sn_notesEntities();
-                this.conn_to_new_server.Open();
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
                     for (int i = 0; i < this.support_note_comment.Count; i++)
@@ -330,18 +424,6 @@ namespace SN_NoteConverter
                             this.cmd.Parameters.AddWithValue("@rec_by", this.support_note_comment[i].rec_by);
                             this.cmd.Parameters.AddWithValue("@type", this.support_note_comment[i].type);
                             this.cmd.ExecuteNonQuery();
-                            //note.note_comment2.Add(new note_comment2
-                            //{
-                            //    id = this.support_note_comment[i].id,
-                            //    date = this.support_note_comment[i].date,
-                            //    description = this.support_note_comment[i].description,
-                            //    file_path = this.support_note_comment[i].file_path,
-                            //    note_id = this.support_note_comment[i].note_id,
-                            //    rec_by = this.support_note_comment[i].rec_by,
-                            //    type = this.support_note_comment[i].type
-                            //});
-
-                            //note.SaveChanges();
 
                             this.wrk.ReportProgress(i + 1);
                         }
@@ -373,7 +455,7 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                this.conn_to_new_server.Open();
+                //this.conn_to_new_server.Open();
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
                     for (int i = 0; i < this.note_calendar.Count; i++)
@@ -429,7 +511,7 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                this.conn_to_new_server.Open();
+                //this.conn_to_new_server.Open();
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
                     List<XNote_Istab> istabs = new List<XNote_Istab>();
@@ -524,8 +606,7 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                //sn_notesEntities note = new sn_notesEntities();
-                this.conn_to_new_server.Open();
+                //this.conn_to_new_server.Open();
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
                     for (int i = 0; i < this.training_calendar.Count; i++)
@@ -583,6 +664,42 @@ namespace SN_NoteConverter
                 this.wrk.CancelAsync();
             }
         }
+
+        private void chLock_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((CheckBox)sender).Checked)
+            {
+                this.txtNewDbName.Enabled = false;
+                this.txtNewPassword.Enabled = false;
+                this.txtNewServerName.Enabled = false;
+                this.txtNewUid.Enabled = false;
+            }
+            else
+            {
+                this.txtNewDbName.Enabled = true;
+                this.txtNewPassword.Enabled = true;
+                this.txtNewServerName.Enabled = true;
+                this.txtNewUid.Enabled = true;
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((CheckBox)sender).Checked)
+            {
+                this.txtOldPwd.Enabled = false;
+                this.txtOldUid.Enabled = false;
+                this.txtOldDB.Enabled = false;
+                this.txtOldSrv.Enabled = false;
+            }
+            else
+            {
+                this.txtOldPwd.Enabled = true;
+                this.txtOldUid.Enabled = true;
+                this.txtOldDB.Enabled = true;
+                this.txtOldSrv.Enabled = true;
+            }
+        }
     }
 
     public class SupportNote_Min
@@ -608,4 +725,73 @@ namespace SN_NoteConverter
         public string chgby { get; set; }
         public DateTime? chgdat { get; set; }
     }
+
+    public static class Helper
+    {
+        public static string EncryptToBytesString(this string str)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(str);
+            string bytes_str = string.Empty;
+            foreach (var b in bytes)
+            {
+                bytes_str += ((int)b).FillLeadingZero(4);
+            }
+
+            return bytes_str;
+        }
+
+        public static string DecryptFromBytesString(this string bytes_string)
+        {
+            IEnumerable<string> str = bytes_string.SplitInParts(4);
+
+            List<byte> b = new List<byte>();
+            foreach (var s in str)
+            {
+                b.Add((byte)Convert.ToInt32(s));
+            }
+
+            return Encoding.UTF8.GetString(b.ToArray());
+        }
+
+        public static string FillLeadingZero(this int source_string, int total_digit)
+        {
+            string result = string.Empty;
+
+            for (int i = 0; i < total_digit - source_string.ToString().Length; i++)
+            {
+                result += "0";
+            }
+
+            return result + source_string.ToString();
+        }
+
+        public static IEnumerable<String> SplitInParts(this String s, int partLength)
+        {
+            if (s == null)
+                throw new ArgumentNullException("s");
+            if (partLength <= 0)
+                throw new ArgumentException("Part length has to be positive.", "partLength");
+
+            for (var i = 0; i < s.Length; i += partLength)
+                yield return s.Substring(i, Math.Min(partLength, s.Length - i));
+        }
+    }
+    //public class XUsers
+    //{
+    //    public int id { get; set; }
+    //    public string username { get; set; }
+    //    public string userpassword { get; set; }
+    //    public string name { get; set; }
+    //    public string email { get; set; }
+    //    public int level { get; set; }
+    //    public string usergroup { get; set; }
+    //    public string status { get; set; }
+    //    public string allowed_web_login { get; set; }
+    //    public string training_expert { get; set; }
+    //    public int max_absent { get; set; }
+    //    public DateTime? create_at { get; set; }
+    //    public DateTime? last_use { get; set; }
+    //    public string rec_by { get; set; }
+
+    //}
 }

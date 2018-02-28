@@ -19,6 +19,12 @@ namespace SN_NoteConverter.Model
             : base("name=sn_netEntities")
         {
         }
+
+        public sn_netEntities(string connection_string)
+            : base(connection_string)
+        {
+
+        }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

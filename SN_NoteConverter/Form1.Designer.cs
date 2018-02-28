@@ -28,21 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv1 = new CC.XDatagrid();
-            this.dgv2 = new CC.XDatagrid();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btnLoadOldData = new System.Windows.Forms.Button();
             this.btnStartImport = new System.Windows.Forms.Button();
             this.btnStopImport = new System.Windows.Forms.Button();
             this.lblProgress = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chLock = new System.Windows.Forms.CheckBox();
+            this.txtNewPassword = new System.Windows.Forms.TextBox();
+            this.txtNewUid = new System.Windows.Forms.TextBox();
+            this.txtNewDbName = new System.Windows.Forms.TextBox();
+            this.txtNewServerName = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.txtOldPwd = new System.Windows.Forms.TextBox();
+            this.txtOldUid = new System.Windows.Forms.TextBox();
+            this.txtOldDB = new System.Windows.Forms.TextBox();
+            this.txtOldSrv = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv2)).BeginInit();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgv1
@@ -52,46 +68,9 @@
             this.dgv1.AllowUserToDeleteRows = false;
             this.dgv1.AllowUserToResizeColumns = false;
             this.dgv1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(207)))), ((int)(((byte)(179)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 9.75F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgv1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgv1.EnableHeadersVisualStyles = false;
-            this.dgv1.FillEmptyRow = false;
-            this.dgv1.FocusedRowBorderRedLine = false;
-            this.dgv1.Location = new System.Drawing.Point(3, 3);
-            this.dgv1.MultiSelect = false;
-            this.dgv1.Name = "dgv1";
-            this.dgv1.ReadOnly = true;
-            this.dgv1.RowHeadersVisible = false;
-            this.dgv1.RowTemplate.Height = 26;
-            this.dgv1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv1.Size = new System.Drawing.Size(452, 388);
-            this.dgv1.StandardTab = true;
-            this.dgv1.TabIndex = 0;
-            // 
-            // dgv2
-            // 
-            this.dgv2.AllowSortByColumnHeaderClicked = false;
-            this.dgv2.AllowUserToAddRows = false;
-            this.dgv2.AllowUserToDeleteRows = false;
-            this.dgv2.AllowUserToResizeColumns = false;
-            this.dgv2.AllowUserToResizeRows = false;
+            this.dgv1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(207)))), ((int)(((byte)(179)))));
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
@@ -99,8 +78,8 @@
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgv2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgv1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 9.75F);
@@ -108,39 +87,21 @@
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv2.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgv2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgv2.EnableHeadersVisualStyles = false;
-            this.dgv2.FillEmptyRow = false;
-            this.dgv2.FocusedRowBorderRedLine = false;
-            this.dgv2.Location = new System.Drawing.Point(461, 3);
-            this.dgv2.MultiSelect = false;
-            this.dgv2.Name = "dgv2";
-            this.dgv2.ReadOnly = true;
-            this.dgv2.RowHeadersVisible = false;
-            this.dgv2.RowTemplate.Height = 26;
-            this.dgv2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv2.Size = new System.Drawing.Size(452, 388);
-            this.dgv2.StandardTab = true;
-            this.dgv2.TabIndex = 0;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.dgv1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.dgv2, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 67);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(916, 394);
-            this.tableLayoutPanel1.TabIndex = 1;
+            this.dgv1.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgv1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgv1.EnableHeadersVisualStyles = false;
+            this.dgv1.FillEmptyRow = false;
+            this.dgv1.FocusedRowBorderRedLine = false;
+            this.dgv1.Location = new System.Drawing.Point(12, 247);
+            this.dgv1.MultiSelect = false;
+            this.dgv1.Name = "dgv1";
+            this.dgv1.ReadOnly = true;
+            this.dgv1.RowHeadersVisible = false;
+            this.dgv1.RowTemplate.Height = 26;
+            this.dgv1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv1.Size = new System.Drawing.Size(708, 189);
+            this.dgv1.StandardTab = true;
+            this.dgv1.TabIndex = 0;
             // 
             // comboBox1
             // 
@@ -187,23 +148,211 @@
             // lblProgress
             // 
             this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblProgress.Location = new System.Drawing.Point(769, 45);
+            this.lblProgress.Location = new System.Drawing.Point(570, 150);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(150, 19);
             this.lblProgress.TabIndex = 6;
             this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.chLock);
+            this.groupBox1.Controls.Add(this.txtNewPassword);
+            this.groupBox1.Controls.Add(this.txtNewUid);
+            this.groupBox1.Controls.Add(this.txtNewDbName);
+            this.groupBox1.Controls.Add(this.txtNewServerName);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Location = new System.Drawing.Point(12, 150);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(708, 91);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "New DB Connection";
+            // 
+            // chLock
+            // 
+            this.chLock.AutoSize = true;
+            this.chLock.Location = new System.Drawing.Point(15, 26);
+            this.chLock.Name = "chLock";
+            this.chLock.Size = new System.Drawing.Size(52, 20);
+            this.chLock.TabIndex = 2;
+            this.chLock.Text = "Lock";
+            this.chLock.UseVisualStyleBackColor = true;
+            this.chLock.CheckedChanged += new System.EventHandler(this.chLock_CheckedChanged);
+            // 
+            // txtNewPassword
+            // 
+            this.txtNewPassword.Location = new System.Drawing.Point(483, 52);
+            this.txtNewPassword.Name = "txtNewPassword";
+            this.txtNewPassword.Size = new System.Drawing.Size(189, 23);
+            this.txtNewPassword.TabIndex = 1;
+            // 
+            // txtNewUid
+            // 
+            this.txtNewUid.Location = new System.Drawing.Point(198, 52);
+            this.txtNewUid.Name = "txtNewUid";
+            this.txtNewUid.Size = new System.Drawing.Size(189, 23);
+            this.txtNewUid.TabIndex = 1;
+            // 
+            // txtNewDbName
+            // 
+            this.txtNewDbName.Location = new System.Drawing.Point(483, 25);
+            this.txtNewDbName.Name = "txtNewDbName";
+            this.txtNewDbName.Size = new System.Drawing.Size(189, 23);
+            this.txtNewDbName.TabIndex = 1;
+            // 
+            // txtNewServerName
+            // 
+            this.txtNewServerName.Location = new System.Drawing.Point(198, 25);
+            this.txtNewServerName.Name = "txtNewServerName";
+            this.txtNewServerName.Size = new System.Drawing.Size(189, 23);
+            this.txtNewServerName.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(410, 55);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(63, 16);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Password";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(410, 28);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(60, 16);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "DB Name";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(103, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(50, 16);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "User ID";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(103, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(83, 16);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Server Name";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBox1);
+            this.groupBox2.Controls.Add(this.txtOldPwd);
+            this.groupBox2.Controls.Add(this.txtOldUid);
+            this.groupBox2.Controls.Add(this.txtOldDB);
+            this.groupBox2.Controls.Add(this.txtOldSrv);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Location = new System.Drawing.Point(12, 56);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(708, 91);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Old DB Connection";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(15, 26);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(52, 20);
+            this.checkBox1.TabIndex = 2;
+            this.checkBox1.Text = "Lock";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // txtOldPwd
+            // 
+            this.txtOldPwd.Location = new System.Drawing.Point(483, 52);
+            this.txtOldPwd.Name = "txtOldPwd";
+            this.txtOldPwd.Size = new System.Drawing.Size(189, 23);
+            this.txtOldPwd.TabIndex = 1;
+            // 
+            // txtOldUid
+            // 
+            this.txtOldUid.Location = new System.Drawing.Point(198, 52);
+            this.txtOldUid.Name = "txtOldUid";
+            this.txtOldUid.Size = new System.Drawing.Size(189, 23);
+            this.txtOldUid.TabIndex = 1;
+            // 
+            // txtOldDB
+            // 
+            this.txtOldDB.Location = new System.Drawing.Point(483, 25);
+            this.txtOldDB.Name = "txtOldDB";
+            this.txtOldDB.Size = new System.Drawing.Size(189, 23);
+            this.txtOldDB.TabIndex = 1;
+            // 
+            // txtOldSrv
+            // 
+            this.txtOldSrv.Location = new System.Drawing.Point(198, 25);
+            this.txtOldSrv.Name = "txtOldSrv";
+            this.txtOldSrv.Size = new System.Drawing.Size(189, 23);
+            this.txtOldSrv.TabIndex = 1;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(410, 55);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 16);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Password";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(410, 28);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(60, 16);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "DB Name";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(103, 55);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(50, 16);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "User ID";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(103, 28);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(83, 16);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Server Name";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(922, 464);
+            this.ClientSize = new System.Drawing.Size(732, 448);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.dgv1);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.btnStopImport);
             this.Controls.Add(this.btnStartImport);
             this.Controls.Add(this.btnLoadOldData);
             this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
@@ -211,8 +360,10 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv2)).EndInit();
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -220,13 +371,31 @@
         #endregion
 
         private CC.XDatagrid dgv1;
-        private CC.XDatagrid dgv2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button btnLoadOldData;
         private System.Windows.Forms.Button btnStartImport;
         private System.Windows.Forms.Button btnStopImport;
         private System.Windows.Forms.Label lblProgress;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtNewPassword;
+        private System.Windows.Forms.TextBox txtNewUid;
+        private System.Windows.Forms.TextBox txtNewServerName;
+        private System.Windows.Forms.TextBox txtNewDbName;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox chLock;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TextBox txtOldPwd;
+        private System.Windows.Forms.TextBox txtOldUid;
+        private System.Windows.Forms.TextBox txtOldDB;
+        private System.Windows.Forms.TextBox txtOldSrv;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }
 
