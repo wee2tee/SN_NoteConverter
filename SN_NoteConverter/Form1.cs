@@ -41,8 +41,13 @@ namespace SN_NoteConverter
         private BindingList<note_calendar> note_calendar;
         private BindingList<event_calendar> event_calendar;
         private BindingList<training_calendar> training_calendar;
+        private BindingList<cloud_srv> cloud_srv;
+        private BindingList<ma> ma;
+        private BindingList<mac_allowed> mac_allowed;
+        private BindingList<serial_password> serial_password;
         private BackgroundWorker wrk;
         private List<users> users;
+        private List<serial_minimum> serials;
         private string new_db_server { get { return this.txtNewServerName.Text; } }
         private string new_db_name { get { return this.txtNewDbName.Text; } }
         private string new_uid { get { return this.txtNewUid.Text; } }
@@ -58,12 +63,7 @@ namespace SN_NoteConverter
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //this.conn_to_new_server = new MySqlConnection(this.conn_str_to_new_server);
             Enum.GetValues(typeof(TableName)).Cast<TableName>().ToList().ForEach(i => this.comboBox1.Items.Add(new XDropdownListItem { Text = i.ToString(), Value = i }));
-            //using (sn_netEntities sn = new sn_netEntities())
-            //{
-            //    this.users = sn.users.ToList();
-            //}
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -79,6 +79,8 @@ namespace SN_NoteConverter
                 using (sn_netEntities sn = DBX.DataSet(this.txtOldSrv.Text, this.txtOldDB.Text, this.txtOldUid.Text, this.txtOldPwd.Text))
                 {
                     this.users = sn.users.ToList();
+                    //this.serials = sn.serial.OrderBy(s => s.sernum).Select(s => new serial_minimum { id = s.id, sernum = s.sernum }).ToList();
+                    //Console.WriteLine(" => users.count : " + this.users.Count + "\n => serials.count : " + this.serials.Count);
 
                     switch (this.tbl_name)
                     {
@@ -92,7 +94,7 @@ namespace SN_NoteConverter
                             break;
                         case TableName.NOTE:
                             this.support_note = new BindingList<SupportNote_Min>(sn.support_note.OrderBy(s => s.id).Select(s => new SupportNote_Min { id = s.id, support_note = s, date = s.date, username = s.users_name }).ToList());
-                            Console.WriteLine(" ===> Load complete");
+                            Console.WriteLine(" ===> Load note complete");
                             this.dgv1.DataSource = this.support_note;
                             break;
                         case TableName.NOTE_COMMENT:
@@ -112,16 +114,20 @@ namespace SN_NoteConverter
                             this.dgv1.DataSource = this.training_calendar;
                             break;
                         case TableName.CLOUD_SRV:
-
+                            this.cloud_srv = new BindingList<cloud_srv>(sn.cloud_srv.OrderBy(c => c.id).ToList());
+                            this.dgv1.DataSource = this.cloud_srv;
                             break;
                         case TableName.MA:
-
+                            this.ma = new BindingList<ma>(sn.ma.OrderBy(m => m.id).ToList());
+                            this.dgv1.DataSource = this.ma;
                             break;
                         case TableName.MAC_ALLOWED:
-
+                            this.mac_allowed = new BindingList<mac_allowed>(sn.mac_allowed.OrderBy(m => m.id).ToList());
+                            this.dgv1.DataSource = this.mac_allowed;
                             break;
                         case TableName.SERIAL_PASSWORD:
-
+                            this.serial_password = new BindingList<serial_password>(sn.serial_password.OrderBy(s => s.id).ToList());
+                            this.dgv1.DataSource = this.serial_password;
                             break;
                         default:
                             break;
@@ -170,6 +176,18 @@ namespace SN_NoteConverter
                         break;
                     case TableName.TRAINING_CALENDAR:
                         this.ImportTrainingCalendar();
+                        break;
+                    case TableName.CLOUD_SRV:
+                        this.ImportCloud_Srv();
+                        break;
+                    case TableName.MA:
+                        this.ImportMa();
+                        break;
+                    case TableName.MAC_ALLOWED:
+                        this.ImportMac_Allowed();
+                        break;
+                    case TableName.SERIAL_PASSWORD:
+                        this.ImportSerial_Password();
                         break;
                     default:
                         MessageBox.Show("Please select table to import");
@@ -606,7 +624,6 @@ namespace SN_NoteConverter
         {
             using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
             {
-                //this.conn_to_new_server.Open();
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
                     for (int i = 0; i < this.training_calendar.Count; i++)
@@ -657,6 +674,254 @@ namespace SN_NoteConverter
             }
         }
 
+        private void ImportCloud_Srv()
+        {
+            using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
+            {
+                this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
+                {
+                    this.serials = this.GetSerialMin();
+
+                    for (int i = 0; i < this.cloud_srv.Count; i++)
+                    {
+                        try
+                        {
+                            if (this.wrk.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                this.btnLoadOldData.Enabled = true;
+                                this.btnStopImport.Enabled = false;
+                                return;
+                            }
+
+                            var ser = this.serials.Where(s => s.sernum.Trim() == this.cloud_srv[i].sernum.Trim()).FirstOrDefault();
+                            var creby = this.users.Where(u => u.username.Trim() == this.cloud_srv[i].rec_by.Trim()).FirstOrDefault();
+                            //Console.WriteLine(" => begin record cloud_srv : " + this.cloud_srv[i].sernum);
+                            this.cmd = this.conn_to_new_server.CreateCommand();
+                            this.cmd.CommandText = "Insert into cloud_srv (id, start_date, end_date, email, serial_id, creby_id, credat, chgby_id, chgdat, flag) values (@id, @start_date, @end_date, @email, @serial_id, @creby_id, @credat, @chgby_id, @chgdat, @flag)";
+                            this.cmd.Parameters.AddWithValue("@id", this.cloud_srv[i].id);
+                            this.cmd.Parameters.AddWithValue("@start_date", this.cloud_srv[i].start_date);
+                            this.cmd.Parameters.AddWithValue("@end_date", this.cloud_srv[i].end_date);
+                            this.cmd.Parameters.AddWithValue("@email", this.cloud_srv[i].email);
+                            this.cmd.Parameters.AddWithValue("@serial_id", ser != null ? (int?)ser.id : null);
+                            this.cmd.Parameters.AddWithValue("@creby_id", creby != null ? (int?)creby.id : null);
+                            this.cmd.Parameters.AddWithValue("@credat", this.cloud_srv[i].rec_date);
+                            this.cmd.Parameters.AddWithValue("@chgby_id", null);
+                            this.cmd.Parameters.AddWithValue("@chgdat", null);
+                            this.cmd.Parameters.AddWithValue("@flag", 0);
+                            this.cmd.ExecuteNonQuery();
+
+                            this.wrk.ReportProgress(i + 1);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            continue;
+                        }
+                    }
+                };
+                this.wrk.RunWorkerCompleted += delegate (object sender, RunWorkerCompletedEventArgs e)
+                {
+                    MessageBox.Show("Import completed.");
+                    this.btnLoadOldData.Enabled = true;
+                    this.btnStartImport.Enabled = false;
+                    this.btnStopImport.Enabled = false;
+                    this.conn_to_new_server.Close();
+                };
+                this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
+                {
+                    this.lblProgress.Text = e.ProgressPercentage.ToString() + " / " + this.cloud_srv.Count.ToString();
+                };
+                this.wrk.RunWorkerAsync();
+            }
+        }
+
+        private void ImportMa()
+        {
+            using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
+            {
+                this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
+                {
+                    this.serials = this.GetSerialMin();
+
+                    for (int i = 0; i < this.ma.Count; i++)
+                    {
+                        try
+                        {
+                            if (this.wrk.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                this.btnLoadOldData.Enabled = true;
+                                this.btnStopImport.Enabled = false;
+                                return;
+                            }
+
+                            var ser = this.serials.Where(s => s.sernum.Trim() == this.ma[i].sernum.Trim()).FirstOrDefault();
+                            var creby = this.users.Where(u => u.username.Trim() == this.ma[i].rec_by.Trim()).FirstOrDefault();
+                            
+                            this.cmd = this.conn_to_new_server.CreateCommand();
+                            this.cmd.CommandText = "Insert into ma (id, start_date, end_date, email, serial_id, creby_id, credat, chgby_id, chgdat, flag) values (@id, @start_date, @end_date, @email, @serial_id, @creby_id, @credat, @chgby_id, @chgdat, @flag)";
+                            this.cmd.Parameters.AddWithValue("@id", this.ma[i].id);
+                            this.cmd.Parameters.AddWithValue("@start_date", this.ma[i].start_date);
+                            this.cmd.Parameters.AddWithValue("@end_date", this.ma[i].end_date);
+                            this.cmd.Parameters.AddWithValue("@email", this.ma[i].email);
+                            this.cmd.Parameters.AddWithValue("@serial_id", ser != null ? (int?)ser.id : null);
+                            this.cmd.Parameters.AddWithValue("@creby_id", creby != null ? (int?)creby.id : null);
+                            this.cmd.Parameters.AddWithValue("@credat", this.ma[i].rec_date);
+                            this.cmd.Parameters.AddWithValue("@chgby_id", null);
+                            this.cmd.Parameters.AddWithValue("@chgdat", null);
+                            this.cmd.Parameters.AddWithValue("@flag", 0);
+                            this.cmd.ExecuteNonQuery();
+
+                            this.wrk.ReportProgress(i + 1);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            continue;
+                        }
+                    }
+                };
+                this.wrk.RunWorkerCompleted += delegate (object sender, RunWorkerCompletedEventArgs e)
+                {
+                    MessageBox.Show("Import completed.");
+                    this.btnLoadOldData.Enabled = true;
+                    this.btnStartImport.Enabled = false;
+                    this.btnStopImport.Enabled = false;
+                    this.conn_to_new_server.Close();
+                };
+                this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
+                {
+                    this.lblProgress.Text = e.ProgressPercentage.ToString() + " / " + this.ma.Count.ToString();
+                };
+                this.wrk.RunWorkerAsync();
+            }
+        }
+
+        private void ImportMac_Allowed()
+        {
+            using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
+            {
+                this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
+                {
+                    this.serials = this.GetSerialMin();
+
+                    for (int i = 0; i < this.ma.Count; i++)
+                    {
+                        try
+                        {
+                            if (this.wrk.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                this.btnLoadOldData.Enabled = true;
+                                this.btnStopImport.Enabled = false;
+                                return;
+                            }
+
+                            var ser = this.serials.Where(s => s.sernum.Trim() == this.ma[i].sernum.Trim()).FirstOrDefault();
+                            var creby = this.users.Where(u => u.username.Trim() == this.ma[i].rec_by.Trim()).FirstOrDefault();
+                            
+                            this.cmd = this.conn_to_new_server.CreateCommand();
+                            //this.cmd.CommandText = "Insert into ma (id, start_date, end_date, email, serial_id, creby_id, credat, chgby_id, chgdat, flag) values (@id, @start_date, @end_date, @email, @serial_id, @creby_id, @credat, @chgby_id, @chgdat, @flag)";
+                            //this.cmd.Parameters.AddWithValue("@id", this.ma[i].id);
+                            //this.cmd.Parameters.AddWithValue("@start_date", this.ma[i].start_date);
+                            //this.cmd.Parameters.AddWithValue("@end_date", this.ma[i].end_date);
+                            //this.cmd.Parameters.AddWithValue("@email", this.ma[i].email);
+                            //this.cmd.Parameters.AddWithValue("@serial_id", ser != null ? (int?)ser.id : null);
+                            //this.cmd.Parameters.AddWithValue("@creby_id", creby != null ? (int?)creby.id : null);
+                            //this.cmd.Parameters.AddWithValue("@credat", this.ma[i].rec_date);
+                            //this.cmd.Parameters.AddWithValue("@chgby_id", null);
+                            //this.cmd.Parameters.AddWithValue("@chgdat", null);
+                            //this.cmd.Parameters.AddWithValue("@flag", 0);
+                            //this.cmd.ExecuteNonQuery();
+
+                            this.wrk.ReportProgress(i + 1);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            continue;
+                        }
+                    }
+                };
+                this.wrk.RunWorkerCompleted += delegate (object sender, RunWorkerCompletedEventArgs e)
+                {
+                    MessageBox.Show("Import completed.");
+                    this.btnLoadOldData.Enabled = true;
+                    this.btnStartImport.Enabled = false;
+                    this.btnStopImport.Enabled = false;
+                    this.conn_to_new_server.Close();
+                };
+                this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
+                {
+                    this.lblProgress.Text = e.ProgressPercentage.ToString() + " / " + this.ma.Count.ToString();
+                };
+                this.wrk.RunWorkerAsync();
+            }
+        }
+
+        private void ImportSerial_Password()
+        {
+            using (this.wrk = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true })
+            {
+                this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
+                {
+                    this.serials = this.GetSerialMin();
+
+                    for (int i = 0; i < this.ma.Count; i++)
+                    {
+                        try
+                        {
+                            if (this.wrk.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                this.btnLoadOldData.Enabled = true;
+                                this.btnStopImport.Enabled = false;
+                                return;
+                            }
+
+                            var ser = this.serials.Where(s => s.sernum.Trim() == this.ma[i].sernum.Trim()).FirstOrDefault();
+                            var creby = this.users.Where(u => u.username.Trim() == this.ma[i].rec_by.Trim()).FirstOrDefault();
+                            
+                            this.cmd = this.conn_to_new_server.CreateCommand();
+                            //this.cmd.CommandText = "Insert into ma (id, start_date, end_date, email, serial_id, creby_id, credat, chgby_id, chgdat, flag) values (@id, @start_date, @end_date, @email, @serial_id, @creby_id, @credat, @chgby_id, @chgdat, @flag)";
+                            //this.cmd.Parameters.AddWithValue("@id", this.ma[i].id);
+                            //this.cmd.Parameters.AddWithValue("@start_date", this.ma[i].start_date);
+                            //this.cmd.Parameters.AddWithValue("@end_date", this.ma[i].end_date);
+                            //this.cmd.Parameters.AddWithValue("@email", this.ma[i].email);
+                            //this.cmd.Parameters.AddWithValue("@serial_id", ser != null ? (int?)ser.id : null);
+                            //this.cmd.Parameters.AddWithValue("@creby_id", creby != null ? (int?)creby.id : null);
+                            //this.cmd.Parameters.AddWithValue("@credat", this.ma[i].rec_date);
+                            //this.cmd.Parameters.AddWithValue("@chgby_id", null);
+                            //this.cmd.Parameters.AddWithValue("@chgdat", null);
+                            //this.cmd.Parameters.AddWithValue("@flag", 0);
+                            //this.cmd.ExecuteNonQuery();
+
+                            this.wrk.ReportProgress(i + 1);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            continue;
+                        }
+                    }
+                };
+                this.wrk.RunWorkerCompleted += delegate (object sender, RunWorkerCompletedEventArgs e)
+                {
+                    MessageBox.Show("Import completed.");
+                    this.btnLoadOldData.Enabled = true;
+                    this.btnStartImport.Enabled = false;
+                    this.btnStopImport.Enabled = false;
+                    this.conn_to_new_server.Close();
+                };
+                this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
+                {
+                    this.lblProgress.Text = e.ProgressPercentage.ToString() + " / " + this.ma.Count.ToString();
+                };
+                this.wrk.RunWorkerAsync();
+            }
+        }
+
         private void btnStopImport_Click(object sender, EventArgs e)
         {
             if(this.wrk != null)
@@ -698,6 +963,33 @@ namespace SN_NoteConverter
                 this.txtOldUid.Enabled = true;
                 this.txtOldDB.Enabled = true;
                 this.txtOldSrv.Enabled = true;
+            }
+        }
+
+        private List<serial_minimum> GetSerialMin()
+        {
+            List<serial_minimum> serials = new List<serial_minimum>();
+
+            string conn_str = "Server=" + this.new_db_server + ";Database=" + this.new_db_name + ";Uid=" + this.new_uid + ";Pwd=" + this.new_pwd + ";Charset=utf8";
+            using (MySqlConnection conn = new MySqlConnection(conn_str))
+            {
+                conn.Open();
+
+                MySqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "Select id, sernum From serial Order By sernum";
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    var ser_min = new serial_minimum
+                    {
+                        id = Convert.ToInt32(rdr["id"]),
+                        sernum = rdr["sernum"].ToString()
+                    };
+                    serials.Add(ser_min);
+                }
+
+                return serials;
             }
         }
     }
@@ -776,22 +1068,10 @@ namespace SN_NoteConverter
                 yield return s.Substring(i, Math.Min(partLength, s.Length - i));
         }
     }
-    //public class XUsers
-    //{
-    //    public int id { get; set; }
-    //    public string username { get; set; }
-    //    public string userpassword { get; set; }
-    //    public string name { get; set; }
-    //    public string email { get; set; }
-    //    public int level { get; set; }
-    //    public string usergroup { get; set; }
-    //    public string status { get; set; }
-    //    public string allowed_web_login { get; set; }
-    //    public string training_expert { get; set; }
-    //    public int max_absent { get; set; }
-    //    public DateTime? create_at { get; set; }
-    //    public DateTime? last_use { get; set; }
-    //    public string rec_by { get; set; }
-
-    //}
+    
+    public class serial_minimum
+    {
+        public int id { get; set; }
+        public string sernum { get; set; }
+    }
 }

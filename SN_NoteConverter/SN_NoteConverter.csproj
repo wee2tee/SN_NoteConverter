@@ -80,9 +80,6 @@
     <Compile Include="Model\event_calendar.cs">
       <DependentUpon>SN_NetModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\event_calendar2.cs">
-      <DependentUpon>SN_NoteModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\istab.cs">
       <DependentUpon>SN_NetModel.tt</DependentUpon>
     </Compile>
@@ -92,20 +89,8 @@
     <Compile Include="Model\mac_allowed.cs">
       <DependentUpon>SN_NetModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\note2.cs">
-      <DependentUpon>SN_NoteModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\note_calendar.cs">
       <DependentUpon>SN_NetModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\note_calendar2.cs">
-      <DependentUpon>SN_NoteModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\note_comment2.cs">
-      <DependentUpon>SN_NoteModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\note_istab2.cs">
-      <DependentUpon>SN_NoteModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\problem.cs">
       <DependentUpon>SN_NetModel.tt</DependentUpon>
@@ -131,21 +116,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SN_NetModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Model\SN_NoteModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SN_NoteModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\SN_NoteModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SN_NoteModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\SN_NoteModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SN_NoteModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Model\spy_log.cs">
       <DependentUpon>SN_NetModel.tt</DependentUpon>
     </Compile>
@@ -157,9 +127,6 @@
     </Compile>
     <Compile Include="Model\training_calendar.cs">
       <DependentUpon>SN_NetModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\training_calendar2.cs">
-      <DependentUpon>SN_NoteModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\users.cs">
       <DependentUpon>SN_NetModel.tt</DependentUpon>
@@ -190,13 +157,6 @@
     <None Include="Model\SN_NetModel.edmx.diagram">
       <DependentUpon>SN_NetModel.edmx</DependentUpon>
     </None>
-    <EntityDeploy Include="Model\SN_NoteModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SN_NoteModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Model\SN_NoteModel.edmx.diagram">
-      <DependentUpon>SN_NoteModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -221,16 +181,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SN_NetModel.edmx</DependentUpon>
       <LastGenOutput>SN_NetModel.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\SN_NoteModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SN_NoteModel.edmx</DependentUpon>
-      <LastGenOutput>SN_NoteModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\SN_NoteModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SN_NoteModel.edmx</DependentUpon>
-      <LastGenOutput>SN_NoteModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
