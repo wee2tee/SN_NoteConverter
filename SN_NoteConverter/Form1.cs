@@ -577,7 +577,7 @@ namespace SN_NoteConverter
                             var istab = istabs.Where(x => x.tabtyp == this.event_calendar[i].event_type && x.typcod == this.event_calendar[i].event_code).FirstOrDefault();
 
                             this.cmd = this.conn_to_new_server.CreateCommand();
-                            this.cmd.CommandText = "Insert into event_calendar (id, customer, date, event_code, event_code_id, event_type, fine, from_time, med_cert, realname, rec_by, series, status, to_time, users_name) values (@id, @customer, @date, @event_code, @event_code_id, @event_type, @fine, @from_time, @med_cert, @realname, @rec_by, @series, @status, @to_time, @users_name)";
+                            this.cmd.CommandText = "Insert into event_calendar (id, customer, date, event_code, event_code_id, event_type, fine, from_time, med_cert, realname, rec_by, series, status, to_time, users_name, deduct) values (@id, @customer, @date, @event_code, @event_code_id, @event_type, @fine, @from_time, @med_cert, @realname, @rec_by, @series, @status, @to_time, @users_name, @deduct)";
                             this.cmd.Parameters.AddWithValue("@id", this.event_calendar[i].id);
                             this.cmd.Parameters.AddWithValue("@customer", this.event_calendar[i].customer);
                             this.cmd.Parameters.AddWithValue("@date", this.event_calendar[i].date);
@@ -593,6 +593,7 @@ namespace SN_NoteConverter
                             this.cmd.Parameters.AddWithValue("@status", this.event_calendar[i].status);
                             this.cmd.Parameters.AddWithValue("@to_time", this.event_calendar[i].to_time.Substring(0, 5));
                             this.cmd.Parameters.AddWithValue("@users_name", this.event_calendar[i].users_name);
+                            this.cmd.Parameters.AddWithValue("@deduct", 0);
                             this.cmd.ExecuteNonQuery();
 
                             this.wrk.ReportProgress(i + 1);
@@ -696,7 +697,7 @@ namespace SN_NoteConverter
 
                             var ser = this.serials.Where(s => s.sernum.Trim() == this.cloud_srv[i].sernum.Trim()).FirstOrDefault();
                             var creby = this.users.Where(u => u.username.Trim() == this.cloud_srv[i].rec_by.Trim()).FirstOrDefault();
-                            //Console.WriteLine(" => begin record cloud_srv : " + this.cloud_srv[i].sernum);
+                            
                             this.cmd = this.conn_to_new_server.CreateCommand();
                             this.cmd.CommandText = "Insert into cloud_srv (id, start_date, end_date, email, serial_id, creby_id, credat, chgby_id, chgdat, flag) values (@id, @start_date, @end_date, @email, @serial_id, @creby_id, @credat, @chgby_id, @chgdat, @flag)";
                             this.cmd.Parameters.AddWithValue("@id", this.cloud_srv[i].id);
@@ -804,9 +805,7 @@ namespace SN_NoteConverter
             {
                 this.wrk.DoWork += delegate (object sender, DoWorkEventArgs e)
                 {
-                    this.serials = this.GetSerialMin();
-
-                    for (int i = 0; i < this.ma.Count; i++)
+                    for (int i = 0; i < this.mac_allowed.Count; i++)
                     {
                         try
                         {
@@ -818,22 +817,15 @@ namespace SN_NoteConverter
                                 return;
                             }
 
-                            var ser = this.serials.Where(s => s.sernum.Trim() == this.ma[i].sernum.Trim()).FirstOrDefault();
-                            var creby = this.users.Where(u => u.username.Trim() == this.ma[i].rec_by.Trim()).FirstOrDefault();
+                            var creby = this.users.Where(u => u.username.Trim() == this.mac_allowed[i].create_by.Trim()).FirstOrDefault();
                             
                             this.cmd = this.conn_to_new_server.CreateCommand();
-                            //this.cmd.CommandText = "Insert into ma (id, start_date, end_date, email, serial_id, creby_id, credat, chgby_id, chgdat, flag) values (@id, @start_date, @end_date, @email, @serial_id, @creby_id, @credat, @chgby_id, @chgdat, @flag)";
-                            //this.cmd.Parameters.AddWithValue("@id", this.ma[i].id);
-                            //this.cmd.Parameters.AddWithValue("@start_date", this.ma[i].start_date);
-                            //this.cmd.Parameters.AddWithValue("@end_date", this.ma[i].end_date);
-                            //this.cmd.Parameters.AddWithValue("@email", this.ma[i].email);
-                            //this.cmd.Parameters.AddWithValue("@serial_id", ser != null ? (int?)ser.id : null);
-                            //this.cmd.Parameters.AddWithValue("@creby_id", creby != null ? (int?)creby.id : null);
-                            //this.cmd.Parameters.AddWithValue("@credat", this.ma[i].rec_date);
-                            //this.cmd.Parameters.AddWithValue("@chgby_id", null);
-                            //this.cmd.Parameters.AddWithValue("@chgdat", null);
-                            //this.cmd.Parameters.AddWithValue("@flag", 0);
-                            //this.cmd.ExecuteNonQuery();
+                            this.cmd.CommandText = "Insert into mac_allowed (id, mac_address, creby_id, credat) values (@id, @mac_address, @creby_id, @credat)";
+                            this.cmd.Parameters.AddWithValue("@id", this.mac_allowed[i].id);
+                            this.cmd.Parameters.AddWithValue("@mac_address", this.mac_allowed[i].mac_address);
+                            this.cmd.Parameters.AddWithValue("@creby_id", creby != null ? (int?)creby.id : null);
+                            this.cmd.Parameters.AddWithValue("@credat", this.mac_allowed[i].create_at);
+                            this.cmd.ExecuteNonQuery();
 
                             this.wrk.ReportProgress(i + 1);
                         }
@@ -854,7 +846,7 @@ namespace SN_NoteConverter
                 };
                 this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
                 {
-                    this.lblProgress.Text = e.ProgressPercentage.ToString() + " / " + this.ma.Count.ToString();
+                    this.lblProgress.Text = e.ProgressPercentage.ToString() + " / " + this.mac_allowed.Count.ToString();
                 };
                 this.wrk.RunWorkerAsync();
             }
@@ -868,7 +860,7 @@ namespace SN_NoteConverter
                 {
                     this.serials = this.GetSerialMin();
 
-                    for (int i = 0; i < this.ma.Count; i++)
+                    for (int i = 0; i < this.serial_password.Count; i++)
                     {
                         try
                         {
@@ -880,22 +872,20 @@ namespace SN_NoteConverter
                                 return;
                             }
 
-                            var ser = this.serials.Where(s => s.sernum.Trim() == this.ma[i].sernum.Trim()).FirstOrDefault();
-                            var creby = this.users.Where(u => u.username.Trim() == this.ma[i].rec_by.Trim()).FirstOrDefault();
+                            var ser = this.serials.Where(s => s.sernum.Trim() == this.serial_password[i].sernum.Trim()).FirstOrDefault();
+                            var creby = this.users.Where(u => u.username.Trim() == this.serial_password[i].rec_by.Trim()).FirstOrDefault();
                             
                             this.cmd = this.conn_to_new_server.CreateCommand();
-                            //this.cmd.CommandText = "Insert into ma (id, start_date, end_date, email, serial_id, creby_id, credat, chgby_id, chgdat, flag) values (@id, @start_date, @end_date, @email, @serial_id, @creby_id, @credat, @chgby_id, @chgdat, @flag)";
-                            //this.cmd.Parameters.AddWithValue("@id", this.ma[i].id);
-                            //this.cmd.Parameters.AddWithValue("@start_date", this.ma[i].start_date);
-                            //this.cmd.Parameters.AddWithValue("@end_date", this.ma[i].end_date);
-                            //this.cmd.Parameters.AddWithValue("@email", this.ma[i].email);
-                            //this.cmd.Parameters.AddWithValue("@serial_id", ser != null ? (int?)ser.id : null);
-                            //this.cmd.Parameters.AddWithValue("@creby_id", creby != null ? (int?)creby.id : null);
-                            //this.cmd.Parameters.AddWithValue("@credat", this.ma[i].rec_date);
-                            //this.cmd.Parameters.AddWithValue("@chgby_id", null);
-                            //this.cmd.Parameters.AddWithValue("@chgdat", null);
-                            //this.cmd.Parameters.AddWithValue("@flag", 0);
-                            //this.cmd.ExecuteNonQuery();
+                            this.cmd.CommandText = "Insert into serial_password (id, pass_word, serial_id, creby_id, credat, chgby_id, chgdat, flag) values (@id, @pass_word, @serial_id, @creby_id, @credat, @chgby_id, @chgdat, @flag)";
+                            this.cmd.Parameters.AddWithValue("@id", this.serial_password[i].id);
+                            this.cmd.Parameters.AddWithValue("@pass_word", this.serial_password[i].pass_word);
+                            this.cmd.Parameters.AddWithValue("@serial_id", ser != null ? (int?)ser.id : null);
+                            this.cmd.Parameters.AddWithValue("@creby_id", creby != null ? (int?)creby.id : null);
+                            this.cmd.Parameters.AddWithValue("@credat", this.serial_password[i].rec_date);
+                            this.cmd.Parameters.AddWithValue("@chgby_id", null);
+                            this.cmd.Parameters.AddWithValue("@chgdat", null);
+                            this.cmd.Parameters.AddWithValue("@flag", 0);
+                            this.cmd.ExecuteNonQuery();
 
                             this.wrk.ReportProgress(i + 1);
                         }
@@ -916,7 +906,7 @@ namespace SN_NoteConverter
                 };
                 this.wrk.ProgressChanged += delegate (object sender, ProgressChangedEventArgs e)
                 {
-                    this.lblProgress.Text = e.ProgressPercentage.ToString() + " / " + this.ma.Count.ToString();
+                    this.lblProgress.Text = e.ProgressPercentage.ToString() + " / " + this.serial_password.Count.ToString();
                 };
                 this.wrk.RunWorkerAsync();
             }
